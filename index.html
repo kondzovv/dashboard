@@ -411,6 +411,71 @@
   .cat-stat-label { font-size: 12px; min-width: 80px; }
   .cat-stat-count { font-size: 12px; color: var(--text-mute); min-width: 30px; text-align: right; }
 
+  /* ============ MONEY / EARNINGS ============ */
+  .money-hero {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, rgba(0,245,160,0.12), rgba(0,196,255,0.04));
+    border: 1px solid rgba(0,245,160,0.25); border-radius: 16px;
+    padding: 18px 18px 16px;
+  }
+  .money-hero::after {
+    content: ''; position: absolute; top: -40%; right: -10%;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,245,160,0.18), transparent 70%);
+    pointer-events: none;
+  }
+  .money-hero-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-dim); font-weight: 700; }
+  .money-hero-value {
+    font-family: 'Anton', sans-serif; font-size: 46px; line-height: 1.05; margin-top: 6px;
+    background: linear-gradient(135deg, #8AFFD4 0%, #00F5A0 45%, #00C4FF 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 4px 18px rgba(0,245,160,0.35));
+  }
+  .money-hero-sub { font-size: 12px; margin-top: 6px; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+  .money-trend { font-weight: 700; }
+  .money-trend.up { color: var(--mint); }
+  .money-trend.down { color: var(--red); }
+  .money-trend.flat { color: var(--text-mute); }
+
+  .big-stat-value.green { color: var(--mint); }
+  .big-stat-value.blue { color: #00C4FF; }
+
+  .chart-toggle { display: flex; gap: 4px; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 3px; }
+  .chart-toggle-btn {
+    border: none; background: transparent; color: var(--text-mute);
+    font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer;
+    padding: 6px 10px; border-radius: 8px; transition: all 0.2s;
+  }
+  .chart-toggle-btn.active { background: var(--mint); color: #042b1f; }
+
+  .chart-bar.money { background: linear-gradient(to top, #00897a, var(--mint)); }
+  .chart-bar.money.best { background: linear-gradient(to top, #00C4FF, #8AFFD4); box-shadow: 0 0 16px rgba(0,245,160,0.5); }
+  .chart-bar.money .chart-bar-value { color: var(--mint); }
+
+  .money-entry {
+    display: flex; align-items: center; gap: 12px; padding: 12px;
+    background: rgba(0,0,0,0.22); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 8px;
+  }
+  .money-entry .me-emoji {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+    background: rgba(0,245,160,0.1); border: 1px solid rgba(0,245,160,0.2);
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .money-entry .me-mid { flex: 1; min-width: 0; }
+  .money-entry .me-note { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .money-entry .me-meta { font-size: 11px; color: var(--text-mute); margin-top: 2px; }
+  .money-entry .me-amount { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 15px; color: var(--mint); white-space: nowrap; }
+  .money-entry .me-del {
+    width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+    background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-mute); cursor: pointer;
+  }
+  .money-entry .me-del:active { transform: scale(0.9); }
+  .money-entry .me-del svg { width: 12px; height: 12px; }
+  .money-entry .me-del:hover { color: var(--red); }
+
   /* ============ ACHIEVEMENTS ============ */
   .ach-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
@@ -698,6 +763,7 @@
         <div class="tabs">
           <button class="tab active" data-view="tasks">Taski</button>
           <button class="tab" data-view="shop">Sklep</button>
+          <button class="tab" data-view="money">Kasa</button>
           <button class="tab" data-view="stats">Staty</button>
           <button class="tab" data-view="achievements">Achv</button>
         </div>
@@ -717,6 +783,45 @@
             <button class="btn btn-ghost" id="addShopItemBtn" style="font-size:11px; padding:8px 12px;">+ Dodaj</button>
           </div>
           <div id="shopList" class="shop-grid"></div>
+        </div>
+
+        <!-- MONEY VIEW -->
+        <div class="view" id="view-money">
+          <div class="section-head">
+            <div class="section-title">Zarobki</div>
+            <button class="btn btn-ghost" id="addEarningBtn" style="font-size:11px; padding:8px 12px;">+ Dodaj</button>
+          </div>
+          <div class="stat-block">
+            <div class="money-hero">
+              <div class="money-hero-label" id="moneyMonthLabel">Ten miesiąc</div>
+              <div class="money-hero-value" id="moneyThisMonth">0 zł</div>
+              <div class="money-hero-sub" id="moneyTrend"></div>
+            </div>
+            <div class="big-stats" style="margin-top:14px;">
+              <div class="big-stat"><div class="big-stat-label">Łącznie</div><div class="big-stat-value gold" id="moneyTotal">0 zł</div></div>
+              <div class="big-stat"><div class="big-stat-label">Średnio / mies</div><div class="big-stat-value blue" id="moneyAvg">0 zł</div></div>
+              <div class="big-stat"><div class="big-stat-label">Najlepszy mies</div><div class="big-stat-value green" id="moneyBest">0 zł</div></div>
+              <div class="big-stat"><div class="big-stat-label">Wpisów</div><div class="big-stat-value purple" id="moneyCount">0</div></div>
+            </div>
+          </div>
+          <div class="stat-block">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+              <div class="stat-block-title" id="moneyChartTitle" style="margin-bottom:0;">Ostatnie 6 miesięcy</div>
+              <div class="chart-toggle">
+                <button class="chart-toggle-btn active" data-range="months">Miesiące</button>
+                <button class="chart-toggle-btn" data-range="month">Ten miesiąc</button>
+              </div>
+            </div>
+            <div class="chart-bars" id="moneyChart" style="margin-top: 26px; margin-bottom: 26px; height: 140px;"></div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-block-title">Wg źródła</div>
+            <div id="moneySourceStats"></div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-block-title">Historia</div>
+            <div id="moneyList"></div>
+          </div>
         </div>
 
         <!-- STATS VIEW -->
@@ -836,6 +941,7 @@ const firebaseConfig = {
       shopItems: [],       // {id, name, emoji, description, price, owned, ownedCount}
       achievements: {},    // {achId: {unlockedAt}}
       history: [],         // {date: 'YYYY-MM-DD', coins: N}
+      earnings: [],        // {id, amount, note, source, date: 'YYYY-MM-DD', createdAt}
       categoryStats: {},   // {catId: count}
       settings: { sound: true, vibrate: true },
       createdAt: null
@@ -867,6 +973,9 @@ const firebaseConfig = {
       { id: 'first_buy', emoji: '🛍️', name: 'Wydatek', desc: 'Kup coś w sklepie', check: s => s.totalCoinsSpent >= 1 },
       { id: 'spent_500', emoji: '💸', name: 'Wydany 500', desc: 'Wydaj 500 coinów', check: s => s.totalCoinsSpent >= 500 },
       { id: 'rich',      emoji: '🤑', name: 'Bogacz', desc: '5 000 coinów na koncie', check: s => s.coins >= 5000 },
+      { id: 'cash_first', emoji: '💸', name: 'Pierwszy hajs', desc: 'Dodaj pierwszy zarobek', check: s => (s.earnings || []).length >= 1 },
+      { id: 'cash_1k',    emoji: '💵', name: 'Pierwszy tysiąc', desc: 'Zarób łącznie 1 000 zł', check: s => (s.earnings || []).reduce((a, e) => a + (e.amount || 0), 0) >= 1000 },
+      { id: 'cash_10k',   emoji: '💰', name: 'Pięciocyfrowo', desc: 'Zarób łącznie 10 000 zł', check: s => (s.earnings || []).reduce((a, e) => a + (e.amount || 0), 0) >= 10000 },
     ];
 
     // ============================================================
@@ -1120,6 +1229,7 @@ const firebaseConfig = {
       renderHeader();
       renderTasks();
       renderShop();
+      renderMoney();
       renderStats();
       renderAchievements();
     }
@@ -1291,6 +1401,180 @@ const firebaseConfig = {
         });
       }
     }
+
+    // ============================================================
+    // MONEY / EARNINGS
+    // ============================================================
+    const MONTH_LABELS = ['Sty','Lut','Mar','Kwi','Maj','Cze','Lip','Sie','Wrz','Paź','Lis','Gru'];
+    const SOURCE_PRESETS = [
+      { name: 'Praca', emoji: '💼' },
+      { name: 'Freelance', emoji: '💻' },
+      { name: 'Korepetycje', emoji: '🎓' },
+      { name: 'Sprzedaż', emoji: '📦' },
+      { name: 'Prezent', emoji: '🎁' },
+      { name: 'Inwestycje', emoji: '📈' },
+      { name: 'Inne', emoji: '✨' },
+    ];
+    function sourceEmoji(name) {
+      const p = SOURCE_PRESETS.find(s => s.name.toLowerCase() === String(name || '').toLowerCase());
+      return p ? p.emoji : '💸';
+    }
+    function monthKey(dateStr) { return String(dateStr).slice(0, 7); } // YYYY-MM
+    function monthKeyToLabel(key) {
+      const [y, m] = key.split('-');
+      return MONTH_LABELS[parseInt(m, 10) - 1] + " '" + y.slice(2);
+    }
+    function fmtMoney(n) {
+      const neg = n < 0; n = Math.round(Math.abs(n));
+      return (neg ? '-' : '') + n.toLocaleString('pl-PL') + ' zł';
+    }
+    function fmtMoneyShort(n) {
+      n = Math.round(n);
+      if (n >= 10000) return Math.round(n / 1000) + 'k';
+      if (n >= 1000) return (n / 1000).toFixed(1).replace('.0', '') + 'k';
+      return String(n);
+    }
+
+    function renderMoney() {
+      const earnings = state.earnings || [];
+      const total = earnings.reduce((s, e) => s + (e.amount || 0), 0);
+
+      // Group by month
+      const byMonth = {};
+      earnings.forEach(e => { const k = monthKey(e.date); byMonth[k] = (byMonth[k] || 0) + (e.amount || 0); });
+      const monthKeys = Object.keys(byMonth).sort();
+      const curKey = today().slice(0, 7);
+      const prevD = new Date(); prevD.setDate(1); prevD.setMonth(prevD.getMonth() - 1);
+      const prevKey = prevD.toISOString().slice(0, 7);
+      const thisMonth = byMonth[curKey] || 0;
+      const prevMonth = byMonth[prevKey] || 0;
+      const bestMonth = monthKeys.length ? Math.max(...monthKeys.map(k => byMonth[k])) : 0;
+      const monthsActive = monthKeys.length || 1;
+      const avg = total / monthsActive;
+
+      $('#moneyThisMonth').textContent = fmtMoney(thisMonth);
+      $('#moneyTotal').textContent = fmtMoney(total);
+      $('#moneyAvg').textContent = fmtMoney(avg);
+      $('#moneyBest').textContent = fmtMoney(bestMonth);
+      $('#moneyCount').textContent = fmtNum(earnings.length);
+
+      // Trend vs previous month
+      const trendEl = $('#moneyTrend');
+      if (prevMonth > 0) {
+        const pct = Math.round(((thisMonth - prevMonth) / prevMonth) * 100);
+        const cls = pct > 0 ? 'up' : (pct < 0 ? 'down' : 'flat');
+        const arrow = pct > 0 ? '▲' : (pct < 0 ? '▼' : '▬');
+        trendEl.innerHTML = `<span class="money-trend ${cls}">${arrow} ${Math.abs(pct)}%</span> vs poprzedni mies. (${fmtMoney(prevMonth)})`;
+      } else if (thisMonth > 0) {
+        trendEl.innerHTML = `<span class="money-trend up">★ nowy miesiąc</span> — leć dalej!`;
+      } else {
+        trendEl.innerHTML = `<span class="money-trend flat">Brak wpisów w tym miesiącu</span>`;
+      }
+
+      // Chart
+      const chartEl = $('#moneyChart');
+      chartEl.innerHTML = '';
+      let bars = [];
+      if (moneyChartRange === 'months') {
+        $('#moneyChartTitle').textContent = 'Ostatnie 6 miesięcy';
+        const keys = [];
+        for (let i = 5; i >= 0; i--) {
+          const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i);
+          keys.push(d.toISOString().slice(0, 7));
+        }
+        bars = keys.map(k => ({ value: byMonth[k] || 0, label: MONTH_LABELS[parseInt(k.slice(5), 10) - 1], isCur: k === curKey }));
+      } else {
+        $('#moneyChartTitle').textContent = 'Ten miesiąc — dzień po dniu';
+        const now = new Date();
+        const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+        const byDay = {};
+        earnings.filter(e => monthKey(e.date) === curKey).forEach(e => {
+          const day = parseInt(e.date.slice(8, 10), 10);
+          byDay[day] = (byDay[day] || 0) + (e.amount || 0);
+        });
+        const todayNum = now.getDate();
+        for (let day = 1; day <= daysInMonth; day++) {
+          const showLabel = day === 1 || day % 5 === 0 || day === daysInMonth;
+          bars.push({ value: byDay[day] || 0, label: showLabel ? String(day) : '', isCur: day === todayNum });
+        }
+      }
+      const maxVal = Math.max(1, ...bars.map(b => b.value));
+      const maxBar = Math.max(0, ...bars.map(b => b.value));
+      bars.forEach(b => {
+        const bar = document.createElement('div');
+        const isBest = b.value > 0 && b.value === maxBar;
+        bar.className = 'chart-bar money' + (b.value === 0 ? ' empty' : '') + (isBest ? ' best' : '');
+        bar.style.height = `${(b.value / maxVal) * 100}%`;
+        const showVal = b.value > 0 && (moneyChartRange === 'months' || isBest);
+        bar.innerHTML = `${showVal ? `<div class="chart-bar-value">${fmtMoneyShort(b.value)}</div>` : ''}${b.label ? `<div class="chart-bar-label">${b.label}</div>` : ''}`;
+        chartEl.appendChild(bar);
+      });
+
+      // By source
+      const srcEl = $('#moneySourceStats');
+      srcEl.innerHTML = '';
+      if (earnings.length === 0) {
+        srcEl.innerHTML = '<div style="color:var(--text-mute); font-size:13px;">Brak danych. Dodaj pierwszy zarobek 💸</div>';
+      } else {
+        const bySource = {};
+        earnings.forEach(e => { const s = (e.source || 'Inne').trim() || 'Inne'; bySource[s] = (bySource[s] || 0) + (e.amount || 0); });
+        const sorted = Object.entries(bySource).sort((a, b) => b[1] - a[1]);
+        const maxSrc = Math.max(1, ...sorted.map(s => s[1]));
+        sorted.forEach(([name, amt]) => {
+          const pct = (amt / maxSrc) * 100;
+          const row = document.createElement('div');
+          row.className = 'cat-stat-row';
+          row.innerHTML = `
+            <div class="cat-stat-label">${sourceEmoji(name)} ${escapeHtml(name)}</div>
+            <div class="cat-stat-bar"><div class="cat-stat-fill" style="width:${pct}%; background:linear-gradient(90deg,#00897a,#00F5A0);"></div></div>
+            <div class="cat-stat-count" style="min-width:64px;">${fmtMoney(amt)}</div>
+          `;
+          srcEl.appendChild(row);
+        });
+      }
+
+      // History list (newest first)
+      const listEl = $('#moneyList');
+      listEl.innerHTML = '';
+      if (earnings.length === 0) {
+        listEl.innerHTML = `
+          <div class="empty-state" style="padding:30px 20px;">
+            <div class="emoji">💸</div>
+            <div class="text">Zacznij liczyć kasę.<br>Kliknij <b>+ Dodaj</b> i wpisz ile zarobiłeś i za co.</div>
+          </div>`;
+      } else {
+        const sorted = [...earnings].sort((a, b) => (b.date + b.createdAt).localeCompare(a.date + a.createdAt));
+        sorted.slice(0, 50).forEach(e => {
+          const src = (e.source || '').trim();
+          const row = document.createElement('div');
+          row.className = 'money-entry';
+          row.innerHTML = `
+            <div class="me-emoji">${sourceEmoji(src)}</div>
+            <div class="me-mid">
+              <div class="me-note">${escapeHtml(e.note || src || 'Zarobek')}</div>
+              <div class="me-meta">${fmtDateNice(e.date)}${src ? ' · ' + escapeHtml(src) : ''}</div>
+            </div>
+            <div class="me-amount">+${fmtMoney(e.amount)}</div>
+            <div class="me-del" data-action="del-earning" data-id="${e.id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
+          `;
+          listEl.appendChild(row);
+        });
+        listEl.onclick = ev => {
+          const del = ev.target.closest('[data-action="del-earning"]');
+          if (del) deleteEarning(del.dataset.id);
+        };
+      }
+    }
+
+    function fmtDateNice(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      const t = today();
+      const y = new Date(); y.setDate(y.getDate() - 1);
+      if (dateStr === t) return 'Dziś';
+      if (dateStr === y.toISOString().slice(0, 10)) return 'Wczoraj';
+      return `${d.getDate()} ${MONTH_LABELS[d.getMonth()].toLowerCase()}`;
+    }
+
     function renderAchievements() {
       const list = $('#achList');
       list.innerHTML = '';
@@ -1310,6 +1594,7 @@ const firebaseConfig = {
     // ACTIONS
     // ============================================================
     let currentFilter = 'all';
+    let moneyChartRange = 'months';
 
     function completeTask(id, btnEl) {
       const task = state.tasks.find(t => t.id === id);
@@ -1658,6 +1943,81 @@ const firebaseConfig = {
       };
     }
 
+    function openEarningModal() {
+      let selSource = '';
+      const html = `
+        <div class="modal-title">Nowy zarobek</div>
+        <div class="modal-row">
+          <div class="modal-label">Kwota (zł)</div>
+          <input class="input-field mono" type="number" inputmode="decimal" id="eAmount" placeholder="np. 250" min="0" step="0.01" style="font-size:22px;" />
+        </div>
+        <div class="modal-row">
+          <div class="modal-label">Za co</div>
+          <input class="input-field" id="eNote" placeholder="np. Korepetycje z matmy" />
+        </div>
+        <div class="modal-row">
+          <div class="modal-label">Źródło</div>
+          <div class="modal-grid-3" id="eSources" style="margin-bottom:8px;"></div>
+          <input class="input-field" id="eSourceCustom" placeholder="lub wpisz własne źródło" />
+        </div>
+        <div class="modal-row">
+          <div class="modal-label">Data</div>
+          <input class="input-field" type="date" id="eDate" value="${today()}" max="${today()}" />
+        </div>
+        <div class="modal-grid-2">
+          <button class="btn btn-ghost" id="eCancel">Anuluj</button>
+          <button class="btn btn-primary" id="eSave">Dodaj 💸</button>
+        </div>
+      `;
+      openModal(html);
+      const srcEl = $('#eSources');
+      const customEl = $('#eSourceCustom');
+      SOURCE_PRESETS.forEach(s => {
+        const el = document.createElement('div');
+        el.className = 'select-pill';
+        el.innerHTML = `<span class="emo">${s.emoji}</span>${s.name}`;
+        el.onclick = () => {
+          selSource = s.name;
+          srcEl.querySelectorAll('.select-pill').forEach(p => p.classList.remove('active'));
+          el.classList.add('active');
+          customEl.value = '';
+        };
+        srcEl.appendChild(el);
+      });
+      customEl.addEventListener('input', () => {
+        if (customEl.value.trim()) { selSource = ''; srcEl.querySelectorAll('.select-pill').forEach(p => p.classList.remove('active')); }
+      });
+      $('#eCancel').onclick = closeModal;
+      $('#eAmount').focus();
+      $('#eSave').onclick = () => {
+        const amount = parseFloat(($('#eAmount').value || '').replace(',', '.'));
+        const note = $('#eNote').value.trim();
+        const source = (customEl.value.trim() || selSource || '').trim();
+        const date = $('#eDate').value || today();
+        if (!amount || amount <= 0) { toast('❌', 'Wpisz kwotę', 'Musi być większa od 0'); SFX.error(); return; }
+        state.earnings.push({ id: uid(), amount, note, source, date, createdAt: new Date().toISOString() });
+        closeModal();
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        // Celebrate
+        const big = amount >= 500;
+        if (big) { SFX.jackpot(); showBigWin(fmtMoney(amount)); vibrate([20, 40, 20, 40, 80]); }
+        else { SFX.coin(); vibrate([15, 30, 30]); }
+        emitCoins(window.innerWidth / 2, window.innerHeight / 2, big ? 26 : 14);
+        toast('💸', `+${fmtMoney(amount)}`, note || source || 'Dodano do kasy');
+        renderMoney(); scheduleSave();
+        setTimeout(checkAchievements, 600);
+      };
+    }
+
+    function deleteEarning(id) {
+      const e = state.earnings.find(x => x.id === id);
+      if (!e) return;
+      state.earnings = state.earnings.filter(x => x.id !== id);
+      SFX.tick(); vibrate(8);
+      toast('🗑️', 'Usunięto wpis', `-${fmtMoney(e.amount)}`);
+      renderMoney(); scheduleSave();
+    }
+
     function openSettings() {
       const html = `
         <div class="modal-title">Ustawienia</div>
@@ -1720,10 +2080,18 @@ const firebaseConfig = {
     $('#fab').onclick = () => {
       const activeTab = document.querySelector('.tab.active').dataset.view;
       if (activeTab === 'shop') openShopItemModal();
+      else if (activeTab === 'money') openEarningModal();
       else openTaskModal();
     };
     $('#addShopItemBtn').onclick = openShopItemModal;
+    $('#addEarningBtn').onclick = openEarningModal;
     $('#settingsBtn').onclick = openSettings;
+    $$('.chart-toggle-btn').forEach(b => b.onclick = () => {
+      moneyChartRange = b.dataset.range;
+      $$('.chart-toggle-btn').forEach(x => x.classList.toggle('active', x === b));
+      SFX.tick(); vibrate(5);
+      renderMoney();
+    });
 
     // ============================================================
     // AUTH

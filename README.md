@@ -10,6 +10,7 @@ Twoja prywatna gra produktywności. PWA z synchronizacją w chmurze, dostępna t
 - **Sklep nagród** — wymieniasz coiny na własne nagrody (np. "wieczór z grą", "pizza", "kawa")
 - **Levele i XP** — automatycznie z coinów; co level coraz trudniej
 - **Streaki** — codzienne wbicie = ogień rośnie
+- **Kasa 💸** — licznik zarobków: wpisujesz ile i za co zarobiłeś, a apka pokazuje sumę tego miesiąca (z trendem vs poprzedni), wykres ostatnich 6 miesięcy i dzień-po-dniu, podział wg źródła i historię wpisów
 - **Statystyki** — wykres 7 dni, breakdown po kategoriach, lifetime stats
 - **18 osiągnięć** do odblokowania
 - **Animacje iGaming-style** — sypiące się złote monety, slot-machine vibes, BIG WIN, level up confetti, screen shake
