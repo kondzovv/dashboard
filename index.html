@@ -627,6 +627,13 @@
     background: var(--gold-grad); color: #1a0a00; border-color: transparent;
   }
   .select-pill .emo { font-size: 18px; }
+  .select-pill.add { border-style: dashed; color: var(--mint); border-color: rgba(0,245,160,0.4); }
+  .select-pill.add .emo { color: var(--mint); }
+  .src-manage { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .src-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 7px 10px; background: rgba(0,0,0,0.3); border-radius: 8px; }
+  .src-del { color: var(--text-mute); cursor: pointer; padding: 2px 8px; font-size: 12px; }
+  .src-del:active { transform: scale(0.9); }
+  .src-del:hover { color: var(--red); }
 
   .color-swatch {
     width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
@@ -1026,6 +1033,7 @@ const firebaseConfig = {
       history: [],         // {date: 'YYYY-MM-DD', coins: N}
       earnings: [],        // {id, amount, note, source, date: 'YYYY-MM-DD', createdAt}
       moneyCharts: [],     // {id, title, metric:'sum'|'source'|'count', range, source:'' , createdAt}
+      moneySources: [],    // własne źródła zarobku {name, emoji}
       moneyGoal: 0,        // monthly earnings target in zł (0 = brak)
       goalHitMonth: null,  // 'YYYY-MM' — miesiąc, w którym cel już świętowany
       goalsHitTotal: 0,    // ile miesięcy z osiągniętym celem
@@ -1505,8 +1513,31 @@ const firebaseConfig = {
       { name: 'Inne', emoji: '✨' },
     ];
     function sourceEmoji(name) {
-      const p = SOURCE_PRESETS.find(s => s.name.toLowerCase() === String(name || '').toLowerCase());
-      return p ? p.emoji : '💸';
+      const key = String(name || '').toLowerCase();
+      const p = SOURCE_PRESETS.find(s => s.name.toLowerCase() === key);
+      if (p) return p.emoji;
+      const c = (state.moneySources || []).find(s => s.name.toLowerCase() === key);
+      return c ? (c.emoji || '💸') : '💸';
+    }
+    // Presety + własne źródła (unikalne, bez duplikatów)
+    function allSourceDefs() {
+      const map = new Map();
+      SOURCE_PRESETS.forEach(s => map.set(s.name.toLowerCase(), { name: s.name, emoji: s.emoji }));
+      (state.moneySources || []).forEach(s => { if (s && s.name) map.set(s.name.toLowerCase(), { name: s.name, emoji: s.emoji || '💸' }); });
+      return [...map.values()];
+    }
+    function addSource(name, emoji) {
+      name = (name || '').trim(); if (!name) return;
+      const key = name.toLowerCase();
+      if (SOURCE_PRESETS.some(s => s.name.toLowerCase() === key)) return; // preset już istnieje
+      state.moneySources = state.moneySources || [];
+      const ex = state.moneySources.find(s => s.name.toLowerCase() === key);
+      if (ex) { ex.emoji = emoji || ex.emoji; } else state.moneySources.push({ name, emoji: emoji || '💸' });
+      scheduleSave();
+    }
+    function removeSource(name) {
+      state.moneySources = (state.moneySources || []).filter(s => s.name.toLowerCase() !== String(name).toLowerCase());
+      scheduleSave();
     }
     function monthKey(dateStr) { return String(dateStr).slice(0, 7); } // YYYY-MM
     function monthKeyToLabel(key) {
@@ -1989,7 +2020,7 @@ const firebaseConfig = {
       let source = ''; // '' = wszystkie
       // sources: presets + those already used
       const used = [...new Set((state.earnings || []).map(e => ((e.source || '').trim()) || 'Inne'))];
-      const sourceOpts = [...new Set([...SOURCE_PRESETS.map(s => s.name), ...used])];
+      const sourceOpts = [...new Set([...SOURCE_PRESETS.map(s => s.name), ...(state.moneySources || []).map(s => s.name), ...used])];
       const html = `
         <div class="modal-title">Nowy wykres</div>
         <div class="modal-row">
@@ -2435,8 +2466,10 @@ const firebaseConfig = {
       };
     }
 
+    const SOURCE_EMOJIS = ['💼', '💻', '🎓', '📦', '🎁', '📈', '🎨', '🎵', '📹', '🕹️', '🏋️', '🚗', '🍕', '🛒', '💡', '📷', '🌐', '🐶', '✂️', '💸'];
     function openEarningModal() {
       let selSource = '';
+      let selSrcEmoji = SOURCE_EMOJIS[0];
       const html = `
         <div class="modal-title">Nowy zarobek</div>
         <div class="modal-row">
@@ -2449,8 +2482,16 @@ const firebaseConfig = {
         </div>
         <div class="modal-row">
           <div class="modal-label">Źródło</div>
-          <div class="modal-grid-3" id="eSources" style="margin-bottom:8px;"></div>
-          <input class="input-field" id="eSourceCustom" placeholder="lub wpisz własne źródło" />
+          <div class="modal-grid-3" id="eSources"></div>
+          <div id="eNewSource" style="display:none; margin-top:10px; padding:12px; background:rgba(0,0,0,0.25); border:1px solid var(--border); border-radius:12px;">
+            <div class="modal-label" style="margin-bottom:6px;">Nowe źródło</div>
+            <div class="emoji-row" id="eSrcEmojis" style="margin-bottom:8px;"></div>
+            <div style="display:flex; gap:8px;">
+              <input class="input-field" id="eSrcName" placeholder="np. YouTube" style="flex:1;" />
+              <button class="btn btn-primary" id="eSrcAdd" style="padding:0 18px;">Dodaj</button>
+            </div>
+            <div id="eSrcList" class="src-manage"></div>
+          </div>
         </div>
         <div class="modal-row">
           <div class="modal-label">Data</div>
@@ -2463,28 +2504,66 @@ const firebaseConfig = {
       `;
       openModal(html);
       const srcEl = $('#eSources');
-      const customEl = $('#eSourceCustom');
-      SOURCE_PRESETS.forEach(s => {
-        const el = document.createElement('div');
-        el.className = 'select-pill';
-        el.innerHTML = `<span class="emo">${s.emoji}</span>${s.name}`;
-        el.onclick = () => {
-          selSource = s.name;
-          srcEl.querySelectorAll('.select-pill').forEach(p => p.classList.remove('active'));
-          el.classList.add('active');
-          customEl.value = '';
+      function renderSourcePills() {
+        srcEl.innerHTML = '';
+        allSourceDefs().forEach(s => {
+          const el = document.createElement('div');
+          el.className = 'select-pill' + (s.name === selSource ? ' active' : '');
+          el.innerHTML = `<span class="emo">${s.emoji}</span>${escapeHtml(s.name)}`;
+          el.onclick = () => { selSource = (selSource === s.name ? '' : s.name); renderSourcePills(); };
+          srcEl.appendChild(el);
+        });
+        const add = document.createElement('div');
+        add.className = 'select-pill add';
+        add.innerHTML = `<span class="emo">＋</span>Nowe`;
+        add.onclick = () => {
+          const box = $('#eNewSource');
+          const show = box.style.display === 'none';
+          box.style.display = show ? 'block' : 'none';
+          if (show) { renderSrcManage(); $('#eSrcName').focus(); }
         };
-        srcEl.appendChild(el);
-      });
-      customEl.addEventListener('input', () => {
-        if (customEl.value.trim()) { selSource = ''; srcEl.querySelectorAll('.select-pill').forEach(p => p.classList.remove('active')); }
-      });
+        srcEl.appendChild(add);
+      }
+      function renderSrcEmojis() {
+        const el = $('#eSrcEmojis'); el.innerHTML = '';
+        SOURCE_EMOJIS.forEach(e => {
+          const d = document.createElement('div');
+          d.className = 'emoji-pick' + (e === selSrcEmoji ? ' active' : '');
+          d.textContent = e;
+          d.onclick = () => { selSrcEmoji = e; renderSrcEmojis(); };
+          el.appendChild(d);
+        });
+      }
+      function renderSrcManage() {
+        renderSrcEmojis();
+        const list = $('#eSrcList'); list.innerHTML = '';
+        (state.moneySources || []).forEach(s => {
+          const row = document.createElement('div'); row.className = 'src-row';
+          row.innerHTML = `<span>${s.emoji || '💸'} ${escapeHtml(s.name)}</span><span class="src-del" data-n="${escapeAttr(s.name)}">✕</span>`;
+          list.appendChild(row);
+        });
+        list.querySelectorAll('.src-del').forEach(b => b.onclick = () => {
+          const nm = b.dataset.n; removeSource(nm); if (selSource === nm) selSource = '';
+          SFX.tick(); vibrate(6); renderSourcePills(); renderSrcManage();
+        });
+      }
+      renderSourcePills();
+      $('#eSrcAdd').onclick = () => {
+        const name = $('#eSrcName').value.trim();
+        if (!name) { toast('❌', 'Wpisz nazwę źródła', ''); SFX.error(); return; }
+        addSource(name, selSrcEmoji);
+        selSource = name;
+        $('#eSrcName').value = '';
+        SFX.coin(); vibrate([12, 15]);
+        renderSourcePills(); renderSrcManage();
+      };
+      $('#eSrcName').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#eSrcAdd').click(); } });
       $('#eCancel').onclick = closeModal;
       $('#eAmount').focus();
       $('#eSave').onclick = () => {
         const amount = parseFloat(($('#eAmount').value || '').replace(',', '.'));
         const note = $('#eNote').value.trim();
-        const source = (customEl.value.trim() || selSource || '').trim();
+        const source = (selSource || '').trim();
         const date = $('#eDate').value || today();
         if (!amount || amount <= 0) { toast('❌', 'Wpisz kwotę', 'Musi być większa od 0'); SFX.error(); return; }
         const curKey = today().slice(0, 7);
