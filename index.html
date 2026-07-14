@@ -440,14 +440,6 @@
   .big-stat-value.green { color: var(--mint); }
   .big-stat-value.blue { color: #00C4FF; }
 
-  .chart-toggle { display: flex; gap: 4px; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 3px; }
-  .chart-toggle-btn {
-    border: none; background: transparent; color: var(--text-mute);
-    font-family: inherit; font-size: 11px; font-weight: 700; cursor: pointer;
-    padding: 6px 10px; border-radius: 8px; transition: all 0.2s;
-  }
-  .chart-toggle-btn.active { background: var(--mint); color: #042b1f; }
-
   .chart-bar.money { background: linear-gradient(to top, #00897a, var(--mint)); }
   .chart-bar.money.best { background: linear-gradient(to top, #00C4FF, #8AFFD4); box-shadow: 0 0 16px rgba(0,245,160,0.5); }
   .chart-bar.money .chart-bar-value { color: var(--mint); }
@@ -475,6 +467,65 @@
   .money-entry .me-del:active { transform: scale(0.9); }
   .money-entry .me-del svg { width: 12px; height: 12px; }
   .money-entry .me-del:hover { color: var(--red); }
+
+  /* ---- Charts: shared ---- */
+  .money-range-total { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; color: var(--mint); white-space: nowrap; }
+  .money-range-chips { margin-top: 2px; }
+  .money-range-chips .chip { flex: 0 0 auto; }
+  .chart-canvas { height: 150px; position: relative; }
+  .chart-empty { height: 100%; min-height: 90px; display: flex; align-items: center; justify-content: center; color: var(--text-mute); font-size: 13px; text-align: center; }
+  .chart-bars.few { justify-content: space-evenly; gap: 16px; }
+  .chart-bars.few .chart-bar { flex: 0 1 70px; }
+
+  /* ---- Line chart ---- */
+  .line-wrap { position: relative; height: 100%; display: flex; flex-direction: column; }
+  .line-plot { position: relative; flex: 1; min-height: 0; }
+  .line-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .line-dot { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); transform: translate(-50%, -50%); box-shadow: 0 0 0 2px rgba(7,7,11,0.9); cursor: pointer; }
+  .line-dot.peak { width: 11px; height: 11px; background: #8AFFD4; box-shadow: 0 0 12px rgba(0,245,160,0.7), 0 0 0 2px rgba(7,7,11,0.9); }
+  .line-dot.cur { background: #00C4FF; }
+  .line-labels { position: relative; height: 16px; margin-top: 4px; }
+  .line-labels span { position: absolute; transform: translateX(-50%); font-size: 9px; color: var(--text-mute); white-space: nowrap; }
+
+  /* ---- Donut ---- */
+  .donut-wrap { display: flex; align-items: center; gap: 16px; height: 100%; }
+  .donut-box { flex: 0 0 auto; width: 130px; height: 130px; }
+  .donut-box svg { width: 100%; height: 100%; }
+  .donut-seg { transition: stroke-width 0.15s; cursor: pointer; }
+  .donut-seg:hover { stroke-width: 19; }
+  .donut-total { font-family: 'Anton', sans-serif; font-size: 20px; fill: var(--text); }
+  .donut-sub { font-size: 7px; fill: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em; }
+  .donut-legend { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px; max-height: 130px; overflow-y: auto; }
+  .donut-leg { display: flex; align-items: center; gap: 7px; font-size: 12px; cursor: pointer; }
+  .donut-leg .dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+  .donut-leg .nm { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-dim); }
+  .donut-leg .vl { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--text); white-space: nowrap; }
+
+  /* ---- Mini charts ---- */
+  .mini-chart-grid { display: flex; flex-direction: column; gap: 10px; }
+  .mini-empty { color: var(--text-mute); font-size: 13px; line-height: 1.6; text-align: center; padding: 20px 8px; }
+  .mini-empty b { color: var(--mint); }
+  .mini-chart-card { background: rgba(0,0,0,0.22); border: 1px solid var(--border); border-radius: 14px; padding: 12px 12px 10px; }
+  .mini-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .mini-titles { min-width: 0; }
+  .mini-title { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mini-sub { font-size: 10px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mini-del { width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0; background: rgba(0,0,0,0.3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-mute); cursor: pointer; }
+  .mini-del:active { transform: scale(0.9); }
+  .mini-del:hover { color: var(--red); }
+  .mini-del svg { width: 13px; height: 13px; }
+  .mini-body { height: 120px; position: relative; }
+  .mini-body.is-donut { height: 140px; }
+
+  /* ---- Chart tooltip ---- */
+  #chartTip {
+    position: fixed; z-index: 500; display: none; pointer-events: none;
+    transform: translate(-50%, -100%);
+    background: var(--bg-2); border: 1px solid var(--mint);
+    color: var(--text); font-size: 12px; font-weight: 700;
+    padding: 6px 10px; border-radius: 8px; white-space: nowrap;
+    box-shadow: 0 8px 24px -8px rgba(0,245,160,0.5);
+  }
 
   /* ============ ACHIEVEMENTS ============ */
   .ach-grid {
@@ -805,14 +856,19 @@
             </div>
           </div>
           <div class="stat-block">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-              <div class="stat-block-title" id="moneyChartTitle" style="margin-bottom:0;">Ostatnie 6 miesięcy</div>
-              <div class="chart-toggle">
-                <button class="chart-toggle-btn active" data-range="months">Miesiące</button>
-                <button class="chart-toggle-btn" data-range="month">Ten miesiąc</button>
-              </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:4px;">
+              <div class="stat-block-title" id="moneyMainTitle" style="margin-bottom:0;">Ten miesiąc</div>
+              <div class="money-range-total" id="moneyMainTotal">0 zł</div>
             </div>
-            <div class="chart-bars" id="moneyChart" style="margin-top: 26px; margin-bottom: 26px; height: 140px;"></div>
+            <div class="chip-row money-range-chips" id="moneyRangeChips"></div>
+            <div id="moneyMainChart" class="chart-canvas" style="margin-top:16px;"></div>
+          </div>
+          <div class="stat-block">
+            <div class="section-head" style="margin-bottom:12px;">
+              <div class="stat-block-title" style="margin-bottom:0;">Twoje wykresy</div>
+              <button class="btn btn-ghost" id="addChartBtn" style="font-size:11px; padding:8px 12px;">+ Wykres</button>
+            </div>
+            <div id="moneyCustomCharts" class="mini-chart-grid"></div>
           </div>
           <div class="stat-block">
             <div class="stat-block-title">Wg źródła</div>
@@ -942,6 +998,7 @@ const firebaseConfig = {
       achievements: {},    // {achId: {unlockedAt}}
       history: [],         // {date: 'YYYY-MM-DD', coins: N}
       earnings: [],        // {id, amount, note, source, date: 'YYYY-MM-DD', createdAt}
+      moneyCharts: [],     // {id, title, metric:'sum'|'source'|'count', range, source:'' , createdAt}
       categoryStats: {},   // {catId: count}
       settings: { sound: true, vibrate: true },
       createdAt: null
@@ -1435,6 +1492,225 @@ const firebaseConfig = {
       return String(n);
     }
 
+    // --- Ranges & categorical palette (validated for dark surface) ---
+    const MONEY_RANGES = [
+      { id: 'today',       label: 'Dziś' },
+      { id: 'yesterday',   label: 'Wczoraj' },
+      { id: 'thisWeek',    label: 'Ten tydzień' },
+      { id: 'thisMonth',   label: 'Ten miesiąc' },
+      { id: 'lastMonth',   label: 'Ostatni miesiąc' },
+      { id: 'last3Months', label: 'Ostatnie 3 mies.' },
+      { id: 'thisYear',    label: 'Ten rok' },
+      { id: 'lastYear',    label: 'Ostatni rok' },
+    ];
+    const MONEY_SERIES = ['#00F5A0', '#00C4FF', '#FFB800', '#9D5BFF', '#FF3D5C', '#FF7AB6', '#3DDC84', '#FF7A00'];
+    function seriesColor(i, name) { return name === 'Inne' ? '#7a7a88' : MONEY_SERIES[i % MONEY_SERIES.length]; }
+    const METRIC_LABELS = { sum: 'Suma zarobków', source: 'Podział wg źródła', count: 'Liczba wpisów' };
+    let chartUid = 0;
+
+    // --- Local date helpers ---
+    function localYmd(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }
+    function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+    function startOfWeekDate(d) { const x = new Date(d); x.setHours(0, 0, 0, 0); const day = x.getDay(); x.setDate(x.getDate() + (day === 0 ? -6 : 1 - day)); return x; }
+
+    function moneyRangeBounds(id) {
+      const now = new Date(); now.setHours(0, 0, 0, 0);
+      const Y = now.getFullYear(), M = now.getMonth();
+      switch (id) {
+        case 'today':       return { start: new Date(now), end: new Date(now) };
+        case 'yesterday':   return { start: addDays(now, -1), end: addDays(now, -1) };
+        case 'thisWeek':    { const s = startOfWeekDate(now); return { start: s, end: addDays(s, 6) }; }
+        case 'thisMonth':   return { start: new Date(Y, M, 1), end: new Date(Y, M + 1, 0) };
+        case 'lastMonth':   return { start: new Date(Y, M - 1, 1), end: new Date(Y, M, 0) };
+        case 'last3Months': return { start: new Date(Y, M - 2, 1), end: new Date(Y, M + 1, 0) };
+        case 'thisYear':    return { start: new Date(Y, 0, 1), end: new Date(Y, 11, 31) };
+        case 'lastYear':    return { start: new Date(Y - 1, 0, 1), end: new Date(Y - 1, 11, 31) };
+        default:            return { start: new Date(Y, M, 1), end: new Date(Y, M + 1, 0) };
+      }
+    }
+    // Time buckets for a range (single-day ranges handled separately as by-source)
+    function moneyBuckets(id) {
+      const { start, end } = moneyRangeBounds(id);
+      const now = new Date(); now.setHours(0, 0, 0, 0); const tk = localYmd(now);
+      const out = [];
+      if (id === 'thisWeek') {
+        const dl = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'];
+        for (let i = 0; i < 7; i++) { const d = addDays(start, i); out.push({ label: dl[i], start: d, end: d, isCur: localYmd(d) === tk }); }
+      } else if (id === 'thisMonth' || id === 'lastMonth') {
+        const days = Math.round((end - start) / 86400000) + 1;
+        for (let i = 0; i < days; i++) { const d = addDays(start, i); const day = d.getDate(); const lbl = (day === 1 || day % 5 === 0 || i === days - 1) ? String(day) : ''; out.push({ label: lbl, start: d, end: d, isCur: localYmd(d) === tk }); }
+      } else if (id === 'last3Months') {
+        let ws = startOfWeekDate(start); let idx = 0;
+        while (ws <= end) { const we = addDays(ws, 6); out.push({ label: `${ws.getDate()}.${ws.getMonth() + 1}`, start: new Date(ws), end: we, isCur: now >= ws && now <= we }); ws = addDays(ws, 7); idx++; }
+        out.forEach((b, i) => { if (i % 2 !== 0 && i !== out.length - 1) b.label = ''; });
+      } else if (id === 'thisYear' || id === 'lastYear') {
+        const yr = start.getFullYear();
+        for (let m = 0; m < 12; m++) out.push({ label: MONTH_LABELS[m], start: new Date(yr, m, 1), end: new Date(yr, m + 1, 0), isCur: yr === now.getFullYear() && m === now.getMonth() });
+      }
+      return out;
+    }
+
+    // Core: compute a chart dataset from (range, metric, sourceFilter)
+    function computeMoney(rangeId, metric, sourceFilter) {
+      const { start, end } = moneyRangeBounds(rangeId);
+      const s0 = localYmd(start), e0 = localYmd(end);
+      let entries = (state.earnings || []).filter(e => e.date >= s0 && e.date <= e0);
+      if (sourceFilter) entries = entries.filter(e => (((e.source || '').trim()) || 'Inne') === sourceFilter);
+      const total = entries.reduce((a, e) => a + (e.amount || 0), 0);
+      const count = entries.length;
+      const rangeLabel = (MONEY_RANGES.find(r => r.id === rangeId) || {}).label || '';
+
+      if (metric === 'source') {
+        const by = {};
+        entries.forEach(e => { const k = ((e.source || '').trim()) || 'Inne'; by[k] = (by[k] || 0) + (e.amount || 0); });
+        let slices = Object.entries(by).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
+        if (slices.length > 8) { const head = slices.slice(0, 7); const rest = slices.slice(7).reduce((a, s) => a + s.value, 0); head.push({ name: 'Inne', value: rest }); slices = head; }
+        return { mode: 'donut', slices, total, count, rangeLabel, metric, empty: total <= 0 };
+      }
+
+      const single = rangeId === 'today' || rangeId === 'yesterday';
+      let buckets;
+      if (single) {
+        const by = {};
+        entries.forEach(e => { const k = ((e.source || '').trim()) || 'Inne'; if (!by[k]) by[k] = { sum: 0, n: 0 }; by[k].sum += (e.amount || 0); by[k].n++; });
+        buckets = Object.entries(by).map(([name, v]) => ({ label: sourceEmoji(name), full: name, value: metric === 'count' ? v.n : v.sum, isCur: false })).sort((a, b) => b.value - a.value);
+      } else {
+        buckets = moneyBuckets(rangeId).map(d => {
+          const ds = localYmd(d.start), de = localYmd(d.end);
+          const es = entries.filter(e => e.date >= ds && e.date <= de);
+          const val = metric === 'count' ? es.length : es.reduce((a, e) => a + (e.amount || 0), 0);
+          const full = ds === de ? `${d.start.getDate()}.${d.start.getMonth() + 1}` : `${d.start.getDate()}.${d.start.getMonth() + 1}–${d.end.getDate()}.${d.end.getMonth() + 1}`;
+          return { label: d.label, full, value: val, isCur: d.isCur };
+        });
+      }
+      const mode = (single || rangeId === 'thisWeek' || rangeId === 'thisYear' || rangeId === 'lastYear') ? 'bars' : 'line';
+      return { mode, buckets, total, count, rangeLabel, metric, empty: (metric === 'count' ? count : total) <= 0 };
+    }
+
+    // --- Tooltip ---
+    let tipTimer = null;
+    function chartTipEl() { let t = document.getElementById('chartTip'); if (!t) { t = document.createElement('div'); t.id = 'chartTip'; document.body.appendChild(t); } return t; }
+    function showChartTip(ev, text) {
+      const t = chartTipEl(); t.textContent = text; t.style.display = 'block';
+      const x = (ev.clientX != null) ? ev.clientX : (ev.touches && ev.touches[0] ? ev.touches[0].clientX : window.innerWidth / 2);
+      const y = (ev.clientY != null) ? ev.clientY : (ev.touches && ev.touches[0] ? ev.touches[0].clientY : 100);
+      t.style.left = Math.max(40, Math.min(window.innerWidth - 40, x)) + 'px';
+      t.style.top = Math.max(30, y - 12) + 'px';
+      clearTimeout(tipTimer); tipTimer = setTimeout(hideChartTip, 1600);
+    }
+    function hideChartTip() { const t = document.getElementById('chartTip'); if (t) t.style.display = 'none'; }
+    function tipText(metric, label, value) { return `${label}: ${metric === 'count' ? value + ' wpis.' : fmtMoney(value)}`; }
+
+    // --- Renderers ---
+    function drawChart(container, cfg) {
+      const res = computeMoney(cfg.range, cfg.metric, cfg.source || '');
+      container.innerHTML = '';
+      if (res.empty) { container.innerHTML = '<div class="chart-empty">Brak danych w tym okresie</div>'; return res; }
+      if (res.mode === 'donut') renderDonut(container, res);
+      else if (res.mode === 'line') renderLine(container, res);
+      else renderBars(container, res);
+      return res;
+    }
+
+    function renderBars(container, res) {
+      const wrap = document.createElement('div'); wrap.className = 'chart-bars' + (res.buckets.length <= 3 ? ' few' : ''); wrap.style.height = '100%';
+      const maxVal = Math.max(1, ...res.buckets.map(b => b.value));
+      const maxBar = Math.max(0, ...res.buckets.map(b => b.value));
+      const showVals = res.buckets.length <= 12;
+      res.buckets.forEach(b => {
+        const bar = document.createElement('div');
+        const isBest = b.value > 0 && b.value === maxBar;
+        bar.className = 'chart-bar money' + (b.value === 0 ? ' empty' : '') + (isBest ? ' best' : '');
+        bar.style.height = `${(b.value / maxVal) * 100}%`;
+        const valTxt = res.metric === 'count' ? String(b.value) : fmtMoneyShort(b.value);
+        bar.innerHTML = `${showVals && b.value > 0 ? `<div class="chart-bar-value">${valTxt}</div>` : ''}${b.label ? `<div class="chart-bar-label">${escapeHtml(b.label)}</div>` : ''}`;
+        const tt = ev => showChartTip(ev, tipText(res.metric, b.full || b.label || '', b.value));
+        bar.addEventListener('pointerenter', tt);
+        bar.addEventListener('click', ev => { tt(ev); vibrate(4); });
+        bar.addEventListener('pointerleave', hideChartTip);
+        wrap.appendChild(bar);
+      });
+      container.appendChild(wrap);
+    }
+
+    function renderLine(container, res) {
+      const n = res.buckets.length;
+      const vals = res.buckets.map(b => b.value);
+      const max = Math.max(1, ...vals);
+      const W = 300, H = 140, pad = 6;
+      const x = i => n <= 1 ? W / 2 : (i / (n - 1)) * W;
+      const y = v => H - pad - (v / max) * (H - pad * 2);
+      const pts = res.buckets.map((b, i) => `${x(i).toFixed(1)},${y(b.value).toFixed(1)}`);
+      const gid = 'lg' + (++chartUid);
+      const line = 'M' + pts.join(' L');
+      const area = `M${x(0).toFixed(1)},${H} L` + pts.join(' L') + ` L${x(n - 1).toFixed(1)},${H} Z`;
+      const wrap = document.createElement('div'); wrap.className = 'line-wrap';
+      const plot = document.createElement('div'); plot.className = 'line-plot';
+      plot.innerHTML = `
+        <svg class="line-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+          <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#00F5A0" stop-opacity="0.32"/>
+            <stop offset="1" stop-color="#00F5A0" stop-opacity="0"/>
+          </linearGradient></defs>
+          <path d="${area}" fill="url(#${gid})"/>
+          <path d="${line}" fill="none" stroke="#00F5A0" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>`;
+      res.buckets.forEach((b, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'line-dot' + (b.isCur ? ' cur' : '') + (b.value === max && b.value > 0 ? ' peak' : '');
+        dot.style.left = (n <= 1 ? 50 : (i / (n - 1)) * 100) + '%';
+        dot.style.top = (y(b.value) / H * 100) + '%';
+        const tt = ev => showChartTip(ev, tipText(res.metric, b.full || b.label || '', b.value));
+        dot.addEventListener('pointerenter', tt);
+        dot.addEventListener('click', ev => { tt(ev); vibrate(4); });
+        dot.addEventListener('pointerleave', hideChartTip);
+        plot.appendChild(dot);
+      });
+      const labels = document.createElement('div'); labels.className = 'line-labels';
+      res.buckets.forEach((b, i) => { if (!b.label) return; const sp = document.createElement('span'); sp.textContent = b.label; sp.style.left = (n <= 1 ? 50 : (i / (n - 1)) * 100) + '%'; labels.appendChild(sp); });
+      wrap.appendChild(plot); wrap.appendChild(labels);
+      container.appendChild(wrap);
+    }
+
+    function renderDonut(container, res) {
+      const slices = res.slices;
+      const total = res.total || slices.reduce((a, s) => a + s.value, 0);
+      const cx = 60, cy = 60, R = 46, sw = 16, C = 2 * Math.PI * R;
+      const gap = slices.length > 1 ? 2 : 0;
+      let off = 0;
+      const segs = slices.map((s, i) => {
+        const frac = total > 0 ? s.value / total : 0;
+        const len = Math.max(0, frac * C - gap);
+        const seg = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${seriesColor(i, s.name)}" stroke-width="${sw}" stroke-dasharray="${len.toFixed(2)} ${(C - len).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 ${cx} ${cy})" class="donut-seg" data-i="${i}"/>`;
+        off += frac * C;
+        return seg;
+      }).join('');
+      const legend = slices.map((s, i) => `
+        <div class="donut-leg" data-i="${i}">
+          <span class="dot" style="background:${seriesColor(i, s.name)}"></span>
+          <span class="nm">${sourceEmoji(s.name)} ${escapeHtml(s.name)}</span>
+          <span class="vl">${fmtMoney(s.value)}</span>
+        </div>`).join('');
+      const wrap = document.createElement('div'); wrap.className = 'donut-wrap';
+      wrap.innerHTML = `
+        <div class="donut-box">
+          <svg viewBox="0 0 120 120">${segs}
+            <text x="60" y="58" text-anchor="middle" class="donut-total">${fmtMoneyShort(total)}</text>
+            <text x="60" y="74" text-anchor="middle" class="donut-sub">zł łącznie</text>
+          </svg>
+        </div>
+        <div class="donut-legend">${legend}</div>`;
+      container.appendChild(wrap);
+      wrap.querySelectorAll('.donut-seg, .donut-leg').forEach(el => {
+        const i = parseInt(el.dataset.i, 10); const s = slices[i];
+        const pct = total > 0 ? Math.round((s.value / total) * 100) : 0;
+        const tt = ev => showChartTip(ev, `${sourceEmoji(s.name)} ${s.name}: ${fmtMoney(s.value)} (${pct}%)`);
+        el.addEventListener('pointerenter', tt);
+        el.addEventListener('click', ev => { tt(ev); vibrate(4); });
+        el.addEventListener('pointerleave', hideChartTip);
+      });
+    }
+
     function renderMoney() {
       const earnings = state.earnings || [];
       const total = earnings.reduce((s, e) => s + (e.amount || 0), 0);
@@ -1471,44 +1747,14 @@ const firebaseConfig = {
         trendEl.innerHTML = `<span class="money-trend flat">Brak wpisów w tym miesiącu</span>`;
       }
 
-      // Chart
-      const chartEl = $('#moneyChart');
-      chartEl.innerHTML = '';
-      let bars = [];
-      if (moneyChartRange === 'months') {
-        $('#moneyChartTitle').textContent = 'Ostatnie 6 miesięcy';
-        const keys = [];
-        for (let i = 5; i >= 0; i--) {
-          const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i);
-          keys.push(d.toISOString().slice(0, 7));
-        }
-        bars = keys.map(k => ({ value: byMonth[k] || 0, label: MONTH_LABELS[parseInt(k.slice(5), 10) - 1], isCur: k === curKey }));
-      } else {
-        $('#moneyChartTitle').textContent = 'Ten miesiąc — dzień po dniu';
-        const now = new Date();
-        const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-        const byDay = {};
-        earnings.filter(e => monthKey(e.date) === curKey).forEach(e => {
-          const day = parseInt(e.date.slice(8, 10), 10);
-          byDay[day] = (byDay[day] || 0) + (e.amount || 0);
-        });
-        const todayNum = now.getDate();
-        for (let day = 1; day <= daysInMonth; day++) {
-          const showLabel = day === 1 || day % 5 === 0 || day === daysInMonth;
-          bars.push({ value: byDay[day] || 0, label: showLabel ? String(day) : '', isCur: day === todayNum });
-        }
-      }
-      const maxVal = Math.max(1, ...bars.map(b => b.value));
-      const maxBar = Math.max(0, ...bars.map(b => b.value));
-      bars.forEach(b => {
-        const bar = document.createElement('div');
-        const isBest = b.value > 0 && b.value === maxBar;
-        bar.className = 'chart-bar money' + (b.value === 0 ? ' empty' : '') + (isBest ? ' best' : '');
-        bar.style.height = `${(b.value / maxVal) * 100}%`;
-        const showVal = b.value > 0 && (moneyChartRange === 'months' || isBest);
-        bar.innerHTML = `${showVal ? `<div class="chart-bar-value">${fmtMoneyShort(b.value)}</div>` : ''}${b.label ? `<div class="chart-bar-label">${b.label}</div>` : ''}`;
-        chartEl.appendChild(bar);
-      });
+      // Main chart with range selector
+      renderMoneyRangeChips();
+      const mainRes = drawChart($('#moneyMainChart'), { range: moneyMainRange, metric: 'sum', source: '' });
+      $('#moneyMainTitle').textContent = (MONEY_RANGES.find(r => r.id === moneyMainRange) || {}).label || '';
+      $('#moneyMainTotal').textContent = fmtMoney(mainRes.total);
+
+      // Custom charts
+      renderCustomCharts();
 
       // By source
       const srcEl = $('#moneySourceStats');
@@ -1575,6 +1821,139 @@ const firebaseConfig = {
       return `${d.getDate()} ${MONTH_LABELS[d.getMonth()].toLowerCase()}`;
     }
 
+    function renderMoneyRangeChips() {
+      const el = $('#moneyRangeChips'); el.innerHTML = '';
+      MONEY_RANGES.forEach(r => {
+        const c = document.createElement('div');
+        c.className = 'chip' + (r.id === moneyMainRange ? ' active' : '');
+        c.textContent = r.label;
+        c.onclick = () => { moneyMainRange = r.id; SFX.tick(); vibrate(5); renderMoney(); };
+        el.appendChild(c);
+      });
+    }
+
+    function autoChartTitle(cfg) {
+      const rl = (MONEY_RANGES.find(r => r.id === cfg.range) || {}).label || '';
+      const base = cfg.metric === 'source' ? 'Wg źródła' : (cfg.metric === 'count' ? 'Liczba wpisów' : 'Zarobki');
+      return cfg.source ? `${cfg.source} — ${rl}` : `${base} — ${rl}`;
+    }
+
+    function renderCustomCharts() {
+      const grid = $('#moneyCustomCharts'); grid.innerHTML = '';
+      const charts = state.moneyCharts || [];
+      if (charts.length === 0) {
+        grid.innerHTML = `<div class="mini-empty">Brak własnych wykresów.<br>Kliknij <b>+ Wykres</b> i złóż własny widok — np. „Freelance · ostatnie 3 miesiące" albo „Podział wg źródła · ten rok".</div>`;
+        return;
+      }
+      charts.forEach(cfg => {
+        const card = document.createElement('div'); card.className = 'mini-chart-card';
+        const parts = [METRIC_LABELS[cfg.metric] || 'Zarobki', (MONEY_RANGES.find(r => r.id === cfg.range) || {}).label || ''];
+        if (cfg.source) parts.push('źródło: ' + cfg.source);
+        card.innerHTML = `
+          <div class="mini-head">
+            <div class="mini-titles">
+              <div class="mini-title">${escapeHtml(cfg.title || autoChartTitle(cfg))}</div>
+              <div class="mini-sub">${escapeHtml(parts.join(' · '))}</div>
+            </div>
+            <div class="mini-del" data-id="${cfg.id}" title="Usuń"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+          </div>
+          <div class="mini-body ${cfg.metric === 'source' ? 'is-donut' : ''}"></div>`;
+        grid.appendChild(card);
+        drawChart(card.querySelector('.mini-body'), cfg);
+        card.querySelector('.mini-del').onclick = () => deleteMoneyChart(cfg.id);
+      });
+    }
+
+    function deleteMoneyChart(id) {
+      state.moneyCharts = (state.moneyCharts || []).filter(c => c.id !== id);
+      SFX.tick(); vibrate(8);
+      renderMoney(); scheduleSave();
+    }
+
+    function openChartModal() {
+      let metric = 'sum';
+      let range = 'thisMonth';
+      let source = ''; // '' = wszystkie
+      // sources: presets + those already used
+      const used = [...new Set((state.earnings || []).map(e => ((e.source || '').trim()) || 'Inne'))];
+      const sourceOpts = [...new Set([...SOURCE_PRESETS.map(s => s.name), ...used])];
+      const html = `
+        <div class="modal-title">Nowy wykres</div>
+        <div class="modal-row">
+          <div class="modal-label">Co pokazać</div>
+          <div class="modal-grid-3" id="chMetric">
+            <div class="select-pill active" data-metric="sum"><span class="emo">📊</span>Suma</div>
+            <div class="select-pill" data-metric="source"><span class="emo">🥧</span>Wg źródła</div>
+            <div class="select-pill" data-metric="count"><span class="emo">🔢</span>Liczba</div>
+          </div>
+        </div>
+        <div class="modal-row">
+          <div class="modal-label">Zakres czasu</div>
+          <div class="chip-row" id="chRange" style="flex-wrap:wrap; overflow:visible;"></div>
+        </div>
+        <div class="modal-row" id="chSourceRow">
+          <div class="modal-label">Źródło</div>
+          <div class="chip-row" id="chSource" style="flex-wrap:wrap; overflow:visible;"></div>
+        </div>
+        <div class="modal-row">
+          <div class="modal-label">Tytuł (opcjonalny)</div>
+          <input class="input-field" id="chTitle" placeholder="zostaw puste = auto" />
+        </div>
+        <div class="modal-grid-2">
+          <button class="btn btn-ghost" id="chCancel">Anuluj</button>
+          <button class="btn btn-primary" id="chSave">Dodaj wykres</button>
+        </div>
+      `;
+      openModal(html);
+
+      // Range chips
+      const rEl = $('#chRange');
+      MONEY_RANGES.forEach(r => {
+        const c = document.createElement('div');
+        c.className = 'chip' + (r.id === range ? ' active' : '');
+        c.textContent = r.label;
+        c.onclick = () => { range = r.id; rEl.querySelectorAll('.chip').forEach(x => x.classList.remove('active')); c.classList.add('active'); };
+        rEl.appendChild(c);
+      });
+      // Source chips
+      const sEl = $('#chSource');
+      const renderSourceChips = () => {
+        sEl.innerHTML = '';
+        const all = document.createElement('div');
+        all.className = 'chip' + (source === '' ? ' active' : '');
+        all.textContent = 'Wszystkie';
+        all.onclick = () => { source = ''; sEl.querySelectorAll('.chip').forEach(x => x.classList.remove('active')); all.classList.add('active'); };
+        sEl.appendChild(all);
+        sourceOpts.forEach(name => {
+          const c = document.createElement('div');
+          c.className = 'chip' + (source === name ? ' active' : '');
+          c.textContent = `${sourceEmoji(name)} ${name}`;
+          c.onclick = () => { source = name; sEl.querySelectorAll('.chip').forEach(x => x.classList.remove('active')); c.classList.add('active'); };
+          sEl.appendChild(c);
+        });
+      };
+      renderSourceChips();
+      // Metric pills — hide source filter when metric = source (donut already splits by source)
+      const srcRow = $('#chSourceRow');
+      const syncSourceRow = () => { srcRow.style.display = metric === 'source' ? 'none' : 'flex'; };
+      $$('[data-metric]').forEach(p => p.onclick = () => {
+        metric = p.dataset.metric;
+        $$('[data-metric]').forEach(x => x.classList.remove('active'));
+        p.classList.add('active');
+        syncSourceRow();
+      });
+      syncSourceRow();
+      $('#chCancel').onclick = closeModal;
+      $('#chSave').onclick = () => {
+        const title = $('#chTitle').value.trim();
+        const cfg = { id: uid(), metric, range, source: metric === 'source' ? '' : source, title, createdAt: new Date().toISOString() };
+        state.moneyCharts = state.moneyCharts || [];
+        state.moneyCharts.push(cfg);
+        SFX.coin(); vibrate([15, 20]);
+        closeModal(); renderMoney(); scheduleSave();
+      };
+    }
+
     function renderAchievements() {
       const list = $('#achList');
       list.innerHTML = '';
@@ -1594,7 +1973,7 @@ const firebaseConfig = {
     // ACTIONS
     // ============================================================
     let currentFilter = 'all';
-    let moneyChartRange = 'months';
+    let moneyMainRange = 'thisMonth';
 
     function completeTask(id, btnEl) {
       const task = state.tasks.find(t => t.id === id);
@@ -2085,13 +2464,8 @@ const firebaseConfig = {
     };
     $('#addShopItemBtn').onclick = openShopItemModal;
     $('#addEarningBtn').onclick = openEarningModal;
+    $('#addChartBtn').onclick = openChartModal;
     $('#settingsBtn').onclick = openSettings;
-    $$('.chart-toggle-btn').forEach(b => b.onclick = () => {
-      moneyChartRange = b.dataset.range;
-      $$('.chart-toggle-btn').forEach(x => x.classList.toggle('active', x === b));
-      SFX.tick(); vibrate(5);
-      renderMoney();
-    });
 
     // ============================================================
     // AUTH
