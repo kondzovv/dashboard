@@ -437,6 +437,32 @@
   .money-trend.down { color: var(--red); }
   .money-trend.flat { color: var(--text-mute); }
 
+  .goal-box { position: relative; z-index: 1; margin-top: 14px; }
+  .goal-set-btn {
+    width: 100%; padding: 11px; border-radius: 11px; cursor: pointer;
+    border: 1px dashed rgba(0,245,160,0.45); background: rgba(0,245,160,0.06);
+    color: var(--mint); font-family: inherit; font-weight: 700; font-size: 13px;
+    transition: all 0.2s;
+  }
+  .goal-set-btn:active { transform: scale(0.98); }
+  .goal-progress { cursor: pointer; }
+  .goal-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 7px; }
+  .goal-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); font-weight: 700; display: flex; align-items: center; gap: 5px; }
+  .goal-title .goal-edit { font-size: 10px; color: var(--text-mute); text-transform: none; letter-spacing: 0; }
+  .goal-nums { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 13px; color: var(--text); white-space: nowrap; }
+  .goal-bar { height: 10px; border-radius: 99px; background: rgba(0,0,0,0.4); overflow: hidden; border: 1px solid var(--border); position: relative; }
+  .goal-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #00897a, #00F5A0); box-shadow: 0 0 12px rgba(0,245,160,0.5); transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden; }
+  .goal-fill.complete { background: var(--gold-grad); box-shadow: 0 0 16px rgba(255,184,0,0.6); }
+  .goal-fill::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+    transform: translateX(-100%); animation: goalShine 2.4s ease-in-out infinite;
+  }
+  @keyframes goalShine { 0% { transform: translateX(-100%); } 60%, 100% { transform: translateX(200%); } }
+  .goal-foot { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; color: var(--text-dim); margin-top: 7px; }
+  .goal-foot .pct { font-weight: 700; color: var(--mint); }
+  .goal-foot .done { color: var(--gold); font-weight: 700; }
+
   .big-stat-value.green { color: var(--mint); }
   .big-stat-value.blue { color: #00C4FF; }
 
@@ -847,6 +873,7 @@
               <div class="money-hero-label" id="moneyMonthLabel">Ten miesiąc</div>
               <div class="money-hero-value" id="moneyThisMonth">0 zł</div>
               <div class="money-hero-sub" id="moneyTrend"></div>
+              <div class="goal-box" id="goalBox"></div>
             </div>
             <div class="big-stats" style="margin-top:14px;">
               <div class="big-stat"><div class="big-stat-label">Łącznie</div><div class="big-stat-value gold" id="moneyTotal">0 zł</div></div>
@@ -999,6 +1026,9 @@ const firebaseConfig = {
       history: [],         // {date: 'YYYY-MM-DD', coins: N}
       earnings: [],        // {id, amount, note, source, date: 'YYYY-MM-DD', createdAt}
       moneyCharts: [],     // {id, title, metric:'sum'|'source'|'count', range, source:'' , createdAt}
+      moneyGoal: 0,        // monthly earnings target in zł (0 = brak)
+      goalHitMonth: null,  // 'YYYY-MM' — miesiąc, w którym cel już świętowany
+      goalsHitTotal: 0,    // ile miesięcy z osiągniętym celem
       categoryStats: {},   // {catId: count}
       settings: { sound: true, vibrate: true },
       createdAt: null
@@ -1033,6 +1063,8 @@ const firebaseConfig = {
       { id: 'cash_first', emoji: '💸', name: 'Pierwszy hajs', desc: 'Dodaj pierwszy zarobek', check: s => (s.earnings || []).length >= 1 },
       { id: 'cash_1k',    emoji: '💵', name: 'Pierwszy tysiąc', desc: 'Zarób łącznie 1 000 zł', check: s => (s.earnings || []).reduce((a, e) => a + (e.amount || 0), 0) >= 1000 },
       { id: 'cash_10k',   emoji: '💰', name: 'Pięciocyfrowo', desc: 'Zarób łącznie 10 000 zł', check: s => (s.earnings || []).reduce((a, e) => a + (e.amount || 0), 0) >= 10000 },
+      { id: 'goal_first', emoji: '🎯', name: 'Cel zaliczony', desc: 'Osiągnij cel miesięczny', check: s => (s.goalsHitTotal || 0) >= 1 },
+      { id: 'goal_6',     emoji: '🏹', name: 'Snajper', desc: 'Zalicz cel w 6 miesiącach', check: s => (s.goalsHitTotal || 0) >= 6 },
     ];
 
     // ============================================================
@@ -1747,6 +1779,9 @@ const firebaseConfig = {
         trendEl.innerHTML = `<span class="money-trend flat">Brak wpisów w tym miesiącu</span>`;
       }
 
+      // Monthly goal + progress
+      renderGoal(thisMonth);
+
       // Main chart with range selector
       renderMoneyRangeChips();
       const mainRes = drawChart($('#moneyMainChart'), { range: moneyMainRange, metric: 'sum', source: '' });
@@ -1830,6 +1865,84 @@ const firebaseConfig = {
         c.onclick = () => { moneyMainRange = r.id; SFX.tick(); vibrate(5); renderMoney(); };
         el.appendChild(c);
       });
+    }
+
+    function sumMonth(key) {
+      return (state.earnings || []).reduce((a, e) => a + (monthKey(e.date) === key ? (e.amount || 0) : 0), 0);
+    }
+
+    function renderGoal(thisMonth) {
+      const box = $('#goalBox');
+      const goal = state.moneyGoal || 0;
+      if (goal <= 0) {
+        box.innerHTML = `<button class="goal-set-btn">🎯 Ustaw cel miesięczny</button>`;
+        box.querySelector('.goal-set-btn').onclick = openGoalModal;
+        return;
+      }
+      const pct = Math.min(100, (thisMonth / goal) * 100);
+      const pctRaw = Math.round((thisMonth / goal) * 100);
+      const done = thisMonth >= goal;
+      const remaining = goal - thisMonth;
+      box.innerHTML = `
+        <div class="goal-progress">
+          <div class="goal-head">
+            <span class="goal-title">🎯 Cel miesiąca <span class="goal-edit">· edytuj</span></span>
+            <span class="goal-nums">${fmtMoney(thisMonth)} / ${fmtMoney(goal)}</span>
+          </div>
+          <div class="goal-bar"><div class="goal-fill ${done ? 'complete' : ''}" style="width:${pct}%"></div></div>
+          <div class="goal-foot">
+            <span class="pct">${pctRaw}%</span>
+            ${done
+              ? `<span class="done">🎉 Cel osiągnięty!${thisMonth > goal ? ' +' + fmtMoney(thisMonth - goal) + ' ponad' : ''}</span>`
+              : `<span>zostało ${fmtMoney(remaining)}</span>`}
+          </div>
+        </div>`;
+      box.querySelector('.goal-progress').onclick = openGoalModal;
+    }
+
+    function openGoalModal() {
+      const cur = state.moneyGoal || 0;
+      const PRESETS = [500, 1000, 2000, 3000, 5000];
+      const html = `
+        <div class="modal-title">Cel miesięczny</div>
+        <div class="modal-row">
+          <div class="modal-label">Ile chcesz zarobić w miesiącu (zł)</div>
+          <input class="input-field mono" type="number" id="gAmount" inputmode="decimal" placeholder="np. 2000" min="0" step="50" value="${cur || ''}" style="font-size:22px;" />
+        </div>
+        <div class="modal-row">
+          <div class="modal-label">Szybki wybór</div>
+          <div class="chip-row" id="gPresets" style="flex-wrap:wrap; overflow:visible;"></div>
+        </div>
+        <div class="modal-grid-2">
+          <button class="btn btn-ghost" id="gRemove">${cur ? 'Usuń cel' : 'Anuluj'}</button>
+          <button class="btn btn-primary" id="gSave">Zapisz cel</button>
+        </div>
+      `;
+      openModal(html);
+      const pEl = $('#gPresets');
+      PRESETS.forEach(v => {
+        const c = document.createElement('div');
+        c.className = 'chip';
+        c.textContent = fmtMoney(v);
+        c.onclick = () => { $('#gAmount').value = v; };
+        pEl.appendChild(c);
+      });
+      $('#gAmount').focus();
+      $('#gRemove').onclick = () => {
+        if (cur) { state.moneyGoal = 0; SFX.tick(); vibrate(8); toast('🎯', 'Cel usunięty', ''); closeModal(); renderMoney(); scheduleSave(); }
+        else closeModal();
+      };
+      $('#gSave').onclick = () => {
+        const amount = Math.round(parseFloat(($('#gAmount').value || '').replace(',', '.')));
+        if (!amount || amount <= 0) { toast('❌', 'Wpisz kwotę celu', 'Musi być większa od 0'); SFX.error(); return; }
+        state.moneyGoal = amount;
+        // pozwól świętować ponownie, jeśli cel podniesiony powyżej obecnego wyniku
+        const curKey = today().slice(0, 7);
+        if (state.goalHitMonth === curKey && sumMonth(curKey) < amount) state.goalHitMonth = null;
+        SFX.coin(); vibrate([15, 20]);
+        toast('🎯', 'Cel ustawiony', fmtMoney(amount) + ' / miesiąc');
+        closeModal(); renderMoney(); scheduleSave();
+      };
     }
 
     function autoChartTitle(cfg) {
@@ -2374,6 +2487,9 @@ const firebaseConfig = {
         const source = (customEl.value.trim() || selSource || '').trim();
         const date = $('#eDate').value || today();
         if (!amount || amount <= 0) { toast('❌', 'Wpisz kwotę', 'Musi być większa od 0'); SFX.error(); return; }
+        const curKey = today().slice(0, 7);
+        const goal = state.moneyGoal || 0;
+        const beforeMonth = sumMonth(curKey);
         state.earnings.push({ id: uid(), amount, note, source, date, createdAt: new Date().toISOString() });
         closeModal();
         if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
@@ -2383,6 +2499,20 @@ const firebaseConfig = {
         else { SFX.coin(); vibrate([15, 30, 30]); }
         emitCoins(window.innerWidth / 2, window.innerHeight / 2, big ? 26 : 14);
         toast('💸', `+${fmtMoney(amount)}`, note || source || 'Dodano do kasy');
+        // Monthly goal crossed this month?
+        const afterMonth = sumMonth(curKey);
+        if (goal > 0 && monthKey(date) === curKey && beforeMonth < goal && afterMonth >= goal && state.goalHitMonth !== curKey) {
+          state.goalHitMonth = curKey;
+          state.goalsHitTotal = (state.goalsHitTotal || 0) + 1;
+          setTimeout(() => {
+            SFX.levelUp(); vibrate([30, 50, 30, 50, 100]);
+            showBigWin('CEL ✅');
+            emitConfetti(window.innerWidth / 2, window.innerHeight / 3, 80);
+            setTimeout(() => emitConfetti(window.innerWidth / 4, window.innerHeight / 3, 30), 250);
+            setTimeout(() => emitConfetti(window.innerWidth * 3 / 4, window.innerHeight / 3, 30), 450);
+            toast('🎯', 'Cel miesiąca osiągnięty!', fmtMoney(goal) + ' zdobyte 🔥');
+          }, 900);
+        }
         renderMoney(); scheduleSave();
         setTimeout(checkAchievements, 600);
       };
