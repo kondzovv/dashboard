@@ -1,5 +1,5 @@
 // Minimal service worker for PWA installability + basic offline shell
-const CACHE = 'dashboard-v3';
+const CACHE = 'dashboard-v4';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
