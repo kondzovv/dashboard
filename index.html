@@ -2677,8 +2677,8 @@ const firebaseConfig = {
 'Version=1.0',
 '',
 '[Variables]',
-'; --- ZMIEN TE SCIEZKE na swoj plik ---',
-'StatsFile=C:\\Users\\TWOJA_NAZWA\\Documents\\DashboardWidget\\dashboard-widget.txt',
+'; --- ZMIEN TE SCIEZKE na swoj plik (najprosciej: utworz folder C:\\DashboardWidget) ---',
+'StatsFile=C:\\DashboardWidget\\dashboard-widget.txt',
 '; kolory (R,G,B)',
 'cCard=22,22,32',
 'cText=245,245,247',
@@ -2711,6 +2711,10 @@ const firebaseConfig = {
 'Measure=WebParser',
 'URL=[MeasureStats]',
 'StringIndex=4',
+'RegExpSubstitute=1',
+'IfMatch=^$',
+'IfMatchAction=[!ShowMeter hint][!HideMeter goalValue][!HideMeter goalPct][!HideMeter goalInfo][!Redraw]',
+'IfNotMatchAction=[!HideMeter hint][!ShowMeter goalValue][!ShowMeter goalPct][!ShowMeter goalInfo][!Redraw]',
 '[mGoal]',
 'Measure=WebParser',
 'URL=[MeasureStats]',
@@ -2747,6 +2751,7 @@ const firebaseConfig = {
 'Measure=WebParser',
 'URL=[MeasureStats]',
 'StringIndex=12',
+'Substitute="":"22,22,32"',
 '[mT2]',
 'Measure=WebParser',
 'URL=[MeasureStats]',
@@ -2759,6 +2764,7 @@ const firebaseConfig = {
 'Measure=WebParser',
 'URL=[MeasureStats]',
 'StringIndex=15',
+'Substitute="":"22,22,32"',
 '[mT3]',
 'Measure=WebParser',
 'URL=[MeasureStats]',
@@ -2771,6 +2777,7 @@ const firebaseConfig = {
 'Measure=WebParser',
 'URL=[MeasureStats]',
 'StringIndex=18',
+'Substitute="":"22,22,32"',
 '[mT4]',
 'Measure=WebParser',
 'URL=[MeasureStats]',
@@ -2783,6 +2790,7 @@ const firebaseConfig = {
 'Measure=WebParser',
 'URL=[MeasureStats]',
 'StringIndex=21',
+'Substitute="":"22,22,32"',
 '[mT5]',
 'Measure=WebParser',
 'URL=[MeasureStats]',
@@ -2795,6 +2803,7 @@ const firebaseConfig = {
 'Measure=WebParser',
 'URL=[MeasureStats]',
 'StringIndex=24',
+'Substitute="":"22,22,32"',
 '[mT6]',
 'Measure=WebParser',
 'URL=[MeasureStats]',
@@ -2807,6 +2816,7 @@ const firebaseConfig = {
 'Measure=WebParser',
 'URL=[MeasureStats]',
 'StringIndex=27',
+'Substitute="":"22,22,32"',
 '[mT7]',
 'Measure=WebParser',
 'URL=[MeasureStats]',
@@ -2819,6 +2829,7 @@ const firebaseConfig = {
 'Measure=WebParser',
 'URL=[MeasureStats]',
 'StringIndex=30',
+'Substitute="":"22,22,32"',
 '[mT8]',
 'Measure=WebParser',
 'URL=[MeasureStats]',
@@ -2831,6 +2842,7 @@ const firebaseConfig = {
 'Measure=WebParser',
 'URL=[MeasureStats]',
 'StringIndex=33',
+'Substitute="":"22,22,32"',
 '[mMore]',
 'Measure=WebParser',
 'URL=[MeasureStats]',
@@ -2936,6 +2948,20 @@ const firebaseConfig = {
 'AntiAlias=1',
 'DynamicVariables=1',
 'Text=DO ZROBIENIA ([mTaskCount])',
+'',
+'[hint]',
+'Meter=String',
+'X=24',
+'Y=206',
+'W=412',
+'H=300',
+'Hidden=1',
+'ClipString=2',
+'FontFace=#FontName#',
+'FontSize=12',
+'FontColor=#cDim#',
+'AntiAlias=1',
+'Text=Brak danych z apki.#CRLF##CRLF#1) W apce: Ustawienia -> Widget na pulpit -> wybierz folder (np. C:\\DashboardWidget).#CRLF##CRLF#2) W tym pliku (Dashboard.ini) ustaw StatsFile na pelna sciezke do dashboard-widget.txt#CRLF##CRLF#3) Kliknij prawym na widget -> Refresh.',
 '',
 '; ---- task rows (bullet + tytul + nagroda) ----',
 '[b1]',
@@ -3349,10 +3375,10 @@ const firebaseConfig = {
           <div style="height:1px; background:var(--border); margin:12px 0;"></div>
           <b style="color:var(--text);">Aby zobaczyć widget na pulpicie:</b>
           <ol style="margin:8px 0 0 18px; display:flex; flex-direction:column; gap:7px;">
+            <li>Najprościej: wybierz w kroku wyżej folder <b class="mono">C:\\DashboardWidget</b> (utwórz go, jeśli nie ma) — wtedy skin działa bez zmian.</li>
             <li>Zainstaluj darmowy <b>Rainmeter</b> (rainmeter.net).</li>
-            <li>Pobierz mój skin przyciskiem poniżej i uruchom go (podwójny klik na <b class="mono">Dashboard.ini</b>).</li>
-            <li>W pliku skinu ustaw <b class="mono">StatsFile</b> na pełną ścieżkę do <b class="mono">${WIDGET_FILE}</b> w Twoim folderze.</li>
-            <li>Widget pokaże listę to-do i cel miesięczny, sam się odświeża.</li>
+            <li>Pobierz mój skin przyciskiem poniżej i uruchom (podwójny klik na <b class="mono">Dashboard.ini</b>).</li>
+            <li>Jeśli wybrałeś inny folder — w skinie ustaw <b class="mono">StatsFile</b> na pełną ścieżkę do <b class="mono">${WIDGET_FILE}</b>, potem prawy klik → <b>Refresh</b>.</li>
           </ol>
           <p style="margin-top:12px; font-size:11px; color:var(--text-mute);">Działa na Windows z Chrome/Edge. Odświeża się tylko gdy apka (karta/PWA) jest otwarta.</p>
         </div>
