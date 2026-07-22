@@ -3371,7 +3371,8 @@ const firebaseConfig = {
       const html = `
         <div class="modal-title">Widget na pulpit 🖥️</div>
         <div style="font-size:13px; color:var(--text-dim); line-height:1.7;">
-          <p style="margin-bottom:10px;">Apka zapisuje teraz plik <b class="mono">${WIDGET_FILE}</b>${folderName ? ' w folderze <b>' + escapeHtml(folderName) + '</b>' : ''} i odświeża go automatycznie, gdy apka jest otwarta.</p>
+          <p style="margin-bottom:10px;">✅ Apka sama zapisuje plik z danymi <b class="mono">${WIDGET_FILE}</b>${folderName ? ' w folderze <b>' + escapeHtml(folderName) + '</b>' : ''} (odświeża go automatycznie). <b>Tego pliku nie pobierasz</b> — jest już w tym folderze.</p>
+          <p style="margin-bottom:10px; color:var(--text-mute); font-size:12px;">Przycisk niżej pobiera co innego: <b class="mono">Dashboard.ini</b> — to wygląd widgetu dla Rainmetera (pobierasz raz).</p>
           <div style="height:1px; background:var(--border); margin:12px 0;"></div>
           <b style="color:var(--text);">Aby zobaczyć widget na pulpicie:</b>
           <ol style="margin:8px 0 0 18px; display:flex; flex-direction:column; gap:7px;">
@@ -3380,7 +3381,14 @@ const firebaseConfig = {
             <li>Pobierz mój skin przyciskiem poniżej i uruchom (podwójny klik na <b class="mono">Dashboard.ini</b>).</li>
             <li>Jeśli wybrałeś inny folder — w skinie ustaw <b class="mono">StatsFile</b> na pełną ścieżkę do <b class="mono">${WIDGET_FILE}</b>, potem prawy klik → <b>Refresh</b>.</li>
           </ol>
-          <p style="margin-top:12px; font-size:11px; color:var(--text-mute);">Działa na Windows z Chrome/Edge. Odświeża się tylko gdy apka (karta/PWA) jest otwarta.</p>
+          <div style="height:1px; background:var(--border); margin:12px 0;"></div>
+          <b style="color:var(--text);">Chcesz, żeby zawsze był aktualny? Autostart w Edge:</b>
+          <ol style="margin:8px 0 0 18px; display:flex; flex-direction:column; gap:7px;">
+            <li>W Edge zainstaluj tę stronę jako apkę (ikona instalacji w pasku adresu lub ⋯ → Aplikacje → Zainstaluj).</li>
+            <li>Wejdź na <b class="mono">edge://apps</b>, kliknij apkę prawym → włącz <b>„Uruchamiaj przy logowaniu do urządzenia"</b>.</li>
+            <li>Apka będzie startować z Windowsem i w tle odświeżać plik widgetu. Okno możesz zminimalizować.</li>
+          </ol>
+          <p style="margin-top:12px; font-size:11px; color:var(--text-mute);">Działa na Windows z Chrome/Edge, gdy apka (okno/PWA) jest otwarta. Po restarcie może raz poprosić o zgodę na zapis do folderu — kliknij „Zezwól".</p>
         </div>
         <div class="modal-grid-2" style="margin-top:16px;">
           <button class="btn btn-ghost" id="whDisable">Wyłącz widget</button>
