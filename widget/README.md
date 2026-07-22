@@ -1,6 +1,8 @@
 # 🖥️ Widget na pulpit (Windows) — To-Do + Cel miesięczny
 
-Widget pokazuje na pulpicie **listę to-do** i **cel miesięczny** z Twojego dashboardu. Odświeża się automatycznie, dopóki apka jest otwarta w przeglądarce/PWA.
+Dwa **osobne** widżety na pulpit — jeden z **listą to-do**, drugi z **celem miesięcznym** — wyglądem dopasowane do apki. Możesz je ustawić w różnych miejscach pulpitu. Odświeżają się automatycznie, dopóki apka jest otwarta w przeglądarce/PWA.
+
+Pliki skinów: **`Dashboard-Todo.ini`** (lista zadań) i **`Dashboard-Cel.ini`** (cel miesięczny). Pobierz je z apki (Ustawienia → Widget na pulpit) albo z tego folderu.
 
 > Działa na **Windows** z apką otwartą w **Chrome lub Edge** (na komputerze). Odświeża się tylko gdy apka jest otwarta — gdy ją zamkniesz, widget pokazuje ostatnie znane wartości.
 
@@ -19,15 +21,16 @@ Widget pokazuje na pulpicie **listę to-do** i **cel miesięczny** z Twojego das
 ### 2. Zainstaluj Rainmeter
 - Pobierz i zainstaluj z **https://www.rainmeter.net/** (darmowe).
 
-### 3. Dodaj skin
-- Pobierz **`Dashboard.ini`** (przyciskiem w apce albo z tego folderu w repo).
-- Wrzuć go do: `Dokumenty\Rainmeter\Skins\Dashboard\Dashboard.ini`
-- Jeśli w kroku 1 wybrałeś `C:\DashboardWidget` — **nic nie musisz zmieniać**, skin już tam patrzy.
-- Jeśli wybrałeś inny folder — otwórz **`Dashboard.ini`** w Notatniku i w `[Variables]` ustaw:
+### 3. Dodaj skiny (dwa osobne widżety)
+- Pobierz **`Dashboard-Todo.ini`** i **`Dashboard-Cel.ini`** (przyciskami w apce albo z tego folderu).
+- Wrzuć oba do `Dokumenty\Rainmeter\Skins\Dashboard\` (mogą być w jednym folderze).
+- W Rainmeterze załaduj każdy z osobna — pojawią się jako dwa niezależne widżety, które przeciągniesz gdzie chcesz.
+- Jeśli w kroku 1 wybrałeś `C:\DashboardWidget` — **nic nie musisz zmieniać**, oba skiny już tam patrzą.
+- Jeśli wybrałeś inny folder — w każdym `.ini` w `[Variables]` ustaw:
   ```
   StatsFile=C:\pełna\ścieżka\do\dashboard-widget.txt
   ```
-- Gdy widget pokazuje instrukcję zamiast danych — znaczy, że nie widzi pliku: sprawdź `StatsFile` i czy eksport w apce jest włączony, potem prawy klik na widget → **Refresh**.
+- Gdy widget pokazuje instrukcję zamiast danych — nie widzi pliku: sprawdź `StatsFile` i czy eksport w apce jest włączony, potem prawy klik → **Refresh**.
 - W Rainmeterze: **Refresh all**, potem załaduj skin `Dashboard → Dashboard.ini`.
 
 Gotowe — widget pojawi się na pulpicie. Możesz go przeciągnąć w dowolne miejsce.

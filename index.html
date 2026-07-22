@@ -2654,586 +2654,14 @@ const firebaseConfig = {
       };
     }
 
-    // ============================================================
-    // RAINMETER SKIN (downloadable) — reads dashboard-widget.txt
-    // ============================================================
-    const WIDGET_SKIN_INI = [
-'; ============================================================',
-'; Personal Dashboard — widget na pulpit (To-Do + Cel miesiaca)',
-'; 1) Zainstaluj Rainmeter (https://www.rainmeter.net/)',
-'; 2) Ustaw ponizej StatsFile na pelna sciezke do pliku',
-';    dashboard-widget.txt (folder wybrany w apce)',
-'; 3) Zaladuj ten skin w Rainmeterze',
-'; ============================================================',
-'',
-'[Rainmeter]',
-'Update=1000',
-'DynamicWindowSize=1',
-'AccurateText=1',
-'',
-'[Metadata]',
-'Name=Dashboard To-Do & Cel',
-'Author=Personal Dashboard',
-'Version=1.0',
-'',
-'[Variables]',
-'; --- ZMIEN TE SCIEZKE na swoj plik (najprosciej: utworz folder C:\\DashboardWidget) ---',
-'StatsFile=C:\\DashboardWidget\\dashboard-widget.txt',
-'; kolory (R,G,B)',
-'cCard=22,22,32',
-'cText=245,245,247',
-'cDim=154,154,168',
-'cGold=255,184,0',
-'cMint=0,245,160',
-'FontName=Segoe UI',
-'',
-'[MeasureStats]',
-'Measure=WebParser',
-'URL=file://#StatsFile#',
-'CodePage=65001',
-'UpdateRate=2',
-'ForceReload=1',
-'RegExp=(?siU)UPDATED=(.*)\\nCOINS=(.*)\\nSTREAK=(.*)\\nMONTH_EARNED=(.*)\\nMONTH_GOAL=(.*)\\nHAS_GOAL=(.*)\\nGOAL_PCT=(.*)\\nGOAL_INFO=(.*)\\nTASKCOUNT=(.*)\\nTASK1=(.*)\\nTASK1_R=(.*)\\nTASK1_C=(.*)\\nTASK2=(.*)\\nTASK2_R=(.*)\\nTASK2_C=(.*)\\nTASK3=(.*)\\nTASK3_R=(.*)\\nTASK3_C=(.*)\\nTASK4=(.*)\\nTASK4_R=(.*)\\nTASK4_C=(.*)\\nTASK5=(.*)\\nTASK5_R=(.*)\\nTASK5_C=(.*)\\nTASK6=(.*)\\nTASK6_R=(.*)\\nTASK6_C=(.*)\\nTASK7=(.*)\\nTASK7_R=(.*)\\nTASK7_C=(.*)\\nTASK8=(.*)\\nTASK8_R=(.*)\\nTASK8_C=(.*)\\nMORE=(.*)\\n',
-'',
-'[mUpdated]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=1',
-'[mCoins]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=2',
-'[mStreak]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=3',
-'[mEarned]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=4',
-'RegExpSubstitute=1',
-'IfMatch=^$',
-'IfMatchAction=[!ShowMeter hint][!HideMeter goalValue][!HideMeter goalPct][!HideMeter goalInfo][!Redraw]',
-'IfNotMatchAction=[!HideMeter hint][!ShowMeter goalValue][!ShowMeter goalPct][!ShowMeter goalInfo][!Redraw]',
-'[mGoal]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=5',
-'[mGoalPct]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=7',
-'Substitute="":"0"',
-'[mGoalInfo]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=8',
-'[mTaskCount]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=9',
-'[mGoalPctCalc]',
-'Measure=Calc',
-'Formula=[mGoalPct]',
-'DynamicVariables=1',
-'MinValue=0',
-'MaxValue=100',
-'',
-'[mT1]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=10',
-'[mT1R]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=11',
-'[mT1C]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=12',
-'Substitute="":"22,22,32"',
-'[mT2]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=13',
-'[mT2R]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=14',
-'[mT2C]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=15',
-'Substitute="":"22,22,32"',
-'[mT3]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=16',
-'[mT3R]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=17',
-'[mT3C]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=18',
-'Substitute="":"22,22,32"',
-'[mT4]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=19',
-'[mT4R]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=20',
-'[mT4C]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=21',
-'Substitute="":"22,22,32"',
-'[mT5]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=22',
-'[mT5R]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=23',
-'[mT5C]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=24',
-'Substitute="":"22,22,32"',
-'[mT6]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=25',
-'[mT6R]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=26',
-'[mT6C]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=27',
-'Substitute="":"22,22,32"',
-'[mT7]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=28',
-'[mT7R]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=29',
-'[mT7C]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=30',
-'Substitute="":"22,22,32"',
-'[mT8]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=31',
-'[mT8R]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=32',
-'[mT8C]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=33',
-'Substitute="":"22,22,32"',
-'[mMore]',
-'Measure=WebParser',
-'URL=[MeasureStats]',
-'StringIndex=34',
-'',
-'; ===================== METERS =====================',
-'[bg]',
-'Meter=Shape',
-'Shape=Rectangle 0,0,460,548,20 | Fill Color 14,14,20,235 | StrokeWidth 1 | Stroke Color 255,255,255,18',
-'',
-'[title]',
-'Meter=String',
-'X=24',
-'Y=22',
-'FontFace=#FontName#',
-'FontSize=19',
-'FontColor=#cGold#',
-'StringStyle=Bold',
-'AntiAlias=1',
-'Text=MOJE TO-DO',
-'',
-'[updated]',
-'Meter=String',
-'X=436',
-'Y=28',
-'FontFace=#FontName#',
-'FontSize=10',
-'FontColor=#cDim#',
-'StringAlign=Right',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mUpdated]',
-'',
-'[goalLabel]',
-'Meter=String',
-'X=24',
-'Y=62',
-'FontFace=#FontName#',
-'FontSize=10',
-'FontColor=#cDim#',
-'StringStyle=Bold',
-'AntiAlias=1',
-'Text=CEL MIESIACA',
-'',
-'[goalValue]',
-'Meter=String',
-'X=24',
-'Y=78',
-'FontFace=#FontName#',
-'FontSize=21',
-'FontColor=#cMint#',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mEarned] / [mGoal]',
-'',
-'[goalPct]',
-'Meter=String',
-'X=436',
-'Y=86',
-'FontFace=#FontName#',
-'FontSize=15',
-'FontColor=#cMint#',
-'StringAlign=Right',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mGoalPct]%',
-'',
-'[barBg]',
-'Meter=Shape',
-'Shape=Rectangle 24,120,412,16,8 | Fill Color 0,0,0,150 | StrokeWidth 0',
-'',
-'[bar]',
-'Meter=Bar',
-'MeasureName=mGoalPctCalc',
-'X=24',
-'Y=120',
-'W=412',
-'H=16',
-'BarColor=#cMint#',
-'BarOrientation=Horizontal',
-'',
-'[goalInfo]',
-'Meter=String',
-'X=24',
-'Y=144',
-'FontFace=#FontName#',
-'FontSize=11',
-'FontColor=#cDim#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mGoalInfo]',
-'',
-'[tasksHead]',
-'Meter=String',
-'X=24',
-'Y=176',
-'FontFace=#FontName#',
-'FontSize=11',
-'FontColor=#cDim#',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=DO ZROBIENIA ([mTaskCount])',
-'',
-'[hint]',
-'Meter=String',
-'X=24',
-'Y=206',
-'W=412',
-'H=300',
-'Hidden=1',
-'ClipString=2',
-'FontFace=#FontName#',
-'FontSize=12',
-'FontColor=#cDim#',
-'AntiAlias=1',
-'Text=Brak danych z apki.#CRLF##CRLF#1) W apce: Ustawienia -> Widget na pulpit -> wybierz folder (np. C:\\DashboardWidget).#CRLF##CRLF#2) W tym pliku (Dashboard.ini) ustaw StatsFile na pelna sciezke do dashboard-widget.txt#CRLF##CRLF#3) Kliknij prawym na widget -> Refresh.',
-'',
-'; ---- task rows (bullet + tytul + nagroda) ----',
-'[b1]',
-'Meter=Shape',
-'Shape=Rectangle 24,210,10,10,3 | Fill Color [mT1C] | StrokeWidth 0',
-'DynamicVariables=1',
-'[t1]',
-'Meter=String',
-'X=44',
-'Y=204',
-'W=340',
-'H=26',
-'ClipString=1',
-'FontFace=#FontName#',
-'FontSize=14',
-'FontColor=#cText#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT1]',
-'[r1]',
-'Meter=String',
-'X=436',
-'Y=204',
-'FontFace=#FontName#',
-'FontSize=13',
-'FontColor=#cGold#',
-'StringAlign=Right',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT1R]',
-'',
-'[b2]',
-'Meter=Shape',
-'Shape=Rectangle 24,246,10,10,3 | Fill Color [mT2C] | StrokeWidth 0',
-'DynamicVariables=1',
-'[t2]',
-'Meter=String',
-'X=44',
-'Y=240',
-'W=340',
-'H=26',
-'ClipString=1',
-'FontFace=#FontName#',
-'FontSize=14',
-'FontColor=#cText#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT2]',
-'[r2]',
-'Meter=String',
-'X=436',
-'Y=240',
-'FontFace=#FontName#',
-'FontSize=13',
-'FontColor=#cGold#',
-'StringAlign=Right',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT2R]',
-'',
-'[b3]',
-'Meter=Shape',
-'Shape=Rectangle 24,282,10,10,3 | Fill Color [mT3C] | StrokeWidth 0',
-'DynamicVariables=1',
-'[t3]',
-'Meter=String',
-'X=44',
-'Y=276',
-'W=340',
-'H=26',
-'ClipString=1',
-'FontFace=#FontName#',
-'FontSize=14',
-'FontColor=#cText#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT3]',
-'[r3]',
-'Meter=String',
-'X=436',
-'Y=276',
-'FontFace=#FontName#',
-'FontSize=13',
-'FontColor=#cGold#',
-'StringAlign=Right',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT3R]',
-'',
-'[b4]',
-'Meter=Shape',
-'Shape=Rectangle 24,318,10,10,3 | Fill Color [mT4C] | StrokeWidth 0',
-'DynamicVariables=1',
-'[t4]',
-'Meter=String',
-'X=44',
-'Y=312',
-'W=340',
-'H=26',
-'ClipString=1',
-'FontFace=#FontName#',
-'FontSize=14',
-'FontColor=#cText#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT4]',
-'[r4]',
-'Meter=String',
-'X=436',
-'Y=312',
-'FontFace=#FontName#',
-'FontSize=13',
-'FontColor=#cGold#',
-'StringAlign=Right',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT4R]',
-'',
-'[b5]',
-'Meter=Shape',
-'Shape=Rectangle 24,354,10,10,3 | Fill Color [mT5C] | StrokeWidth 0',
-'DynamicVariables=1',
-'[t5]',
-'Meter=String',
-'X=44',
-'Y=348',
-'W=340',
-'H=26',
-'ClipString=1',
-'FontFace=#FontName#',
-'FontSize=14',
-'FontColor=#cText#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT5]',
-'[r5]',
-'Meter=String',
-'X=436',
-'Y=348',
-'FontFace=#FontName#',
-'FontSize=13',
-'FontColor=#cGold#',
-'StringAlign=Right',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT5R]',
-'',
-'[b6]',
-'Meter=Shape',
-'Shape=Rectangle 24,390,10,10,3 | Fill Color [mT6C] | StrokeWidth 0',
-'DynamicVariables=1',
-'[t6]',
-'Meter=String',
-'X=44',
-'Y=384',
-'W=340',
-'H=26',
-'ClipString=1',
-'FontFace=#FontName#',
-'FontSize=14',
-'FontColor=#cText#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT6]',
-'[r6]',
-'Meter=String',
-'X=436',
-'Y=384',
-'FontFace=#FontName#',
-'FontSize=13',
-'FontColor=#cGold#',
-'StringAlign=Right',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT6R]',
-'',
-'[b7]',
-'Meter=Shape',
-'Shape=Rectangle 24,426,10,10,3 | Fill Color [mT7C] | StrokeWidth 0',
-'DynamicVariables=1',
-'[t7]',
-'Meter=String',
-'X=44',
-'Y=420',
-'W=340',
-'H=26',
-'ClipString=1',
-'FontFace=#FontName#',
-'FontSize=14',
-'FontColor=#cText#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT7]',
-'[r7]',
-'Meter=String',
-'X=436',
-'Y=420',
-'FontFace=#FontName#',
-'FontSize=13',
-'FontColor=#cGold#',
-'StringAlign=Right',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT7R]',
-'',
-'[b8]',
-'Meter=Shape',
-'Shape=Rectangle 24,462,10,10,3 | Fill Color [mT8C] | StrokeWidth 0',
-'DynamicVariables=1',
-'[t8]',
-'Meter=String',
-'X=44',
-'Y=456',
-'W=340',
-'H=26',
-'ClipString=1',
-'FontFace=#FontName#',
-'FontSize=14',
-'FontColor=#cText#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT8]',
-'[r8]',
-'Meter=String',
-'X=436',
-'Y=456',
-'FontFace=#FontName#',
-'FontSize=13',
-'FontColor=#cGold#',
-'StringAlign=Right',
-'StringStyle=Bold',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mT8R]',
-'',
-'[more]',
-'Meter=String',
-'X=44',
-'Y=494',
-'FontFace=#FontName#',
-'FontSize=11',
-'FontColor=#cDim#',
-'StringStyle=Italic',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=[mMore]',
-'',
-'[footer]',
-'Meter=String',
-'X=24',
-'Y=518',
-'FontFace=#FontName#',
-'FontSize=11',
-'FontColor=#cDim#',
-'AntiAlias=1',
-'DynamicVariables=1',
-'Text=Coiny: [mCoins]     Streak: [mStreak]',
-''
-].join('\r\n');
+    // (Rainmeter skiny generowane dynamicznie — patrz buildGoalSkin/buildTodoSkin niżej)
+
 
     // ============================================================
     // DESKTOP WIDGET EXPORT (File System Access API → Rainmeter)
     // ============================================================
     const WIDGET_FILE = 'dashboard-widget.txt';
-    const WIDGET_SLOTS = 8;
+    const WIDGET_SLOTS = 6;
     let widgetDirHandle = null;
     let widgetWriteTimer = null;
 
@@ -3267,47 +2695,148 @@ const firebaseConfig = {
       return `${(n >> 16) & 255},${(n >> 8) & 255},${n & 255}`;
     }
 
+    // Field order shared by the data file and the skin parsers
+    const WF = (() => {
+      const map = {}; let i = 0;
+      ['UPDATED', 'COINS', 'STREAK', 'MONTH_EARNED', 'MONTH_SUB', 'MONTH_GOAL', 'HAS_GOAL', 'GOAL_PCT', 'GOAL_INFO', 'TASKCOUNT'].forEach(k => map[k] = ++i);
+      for (let t = 1; t <= WIDGET_SLOTS; t++) ['', '_R', '_C', '_CAT', '_TYPE'].forEach(sfx => map['TASK' + t + sfx] = ++i);
+      map.MORE = ++i;
+      return map;
+    })();
+    function widgetRegExp() { return '(?siU)' + Object.keys(WF).map(k => k + '=(.*)').join('\\n') + '\\n'; }
+
     function buildWidgetText() {
       const now = new Date();
       const hh = String(now.getHours()).padStart(2, '0');
       const mm = String(now.getMinutes()).padStart(2, '0');
       const curKey = today().slice(0, 7);
+      const prevD = new Date(); prevD.setDate(1); prevD.setMonth(prevD.getMonth() - 1);
+      const prevKey = prevD.toISOString().slice(0, 7);
       const thisMonth = sumMonth(curKey);
+      const prevMonth = sumMonth(prevKey);
       const goal = state.moneyGoal || 0;
       const pct = goal > 0 ? Math.min(100, Math.round((thisMonth / goal) * 100)) : 0;
       let goalInfo;
       if (goal <= 0) goalInfo = 'Brak celu — ustaw w apce';
-      else if (thisMonth >= goal) goalInfo = 'Cel osiagniety!';
-      else goalInfo = 'zostalo ' + fmtMoney(goal - thisMonth);
+      else if (thisMonth >= goal) goalInfo = 'Cel osiągnięty!';
+      else goalInfo = 'zostało ' + fmtMoney(goal - thisMonth);
+      let sub;
+      if (prevMonth > 0) { const p = Math.round(((thisMonth - prevMonth) / prevMonth) * 100); const a = p > 0 ? '▲' : (p < 0 ? '▼' : '▬'); sub = a + ' ' + Math.abs(p) + '% vs poprzedni mies.'; }
+      else if (thisMonth > 0) sub = '★ nowy miesiąc — leć dalej!';
+      else sub = 'Brak wpisów w tym miesiącu';
 
       const active = state.tasks.filter(t => !t.completed);
-      const clean = s => String(s || '').replace(/[\r\n=]/g, ' ').trim();
-      const lines = [];
-      lines.push('UPDATED=' + hh + ':' + mm);
-      lines.push('COINS=' + fmtNum(state.coins));
-      lines.push('STREAK=' + (state.streak || 0));
-      lines.push('MONTH_EARNED=' + fmtMoney(thisMonth));
-      lines.push('MONTH_GOAL=' + (goal > 0 ? fmtMoney(goal) : '—'));
-      lines.push('HAS_GOAL=' + (goal > 0 ? '1' : '0'));
-      lines.push('GOAL_PCT=' + pct);
-      lines.push('GOAL_INFO=' + clean(goalInfo));
-      lines.push('TASKCOUNT=' + active.length);
+      const clean = s => String(s == null ? '' : s).replace(/[\r\n]/g, ' ').trim();
+      const v = {};
+      v.UPDATED = hh + ':' + mm; v.COINS = fmtNum(state.coins); v.STREAK = state.streak || 0;
+      v.MONTH_EARNED = fmtMoney(thisMonth); v.MONTH_SUB = sub; v.MONTH_GOAL = goal > 0 ? fmtMoney(goal) : '—';
+      v.HAS_GOAL = goal > 0 ? '1' : '0'; v.GOAL_PCT = pct; v.GOAL_INFO = goalInfo; v.TASKCOUNT = active.length;
       for (let i = 0; i < WIDGET_SLOTS; i++) {
-        const t = active[i];
+        const t = active[i]; const n = i + 1;
         if (t) {
           const cat = state.categories.find(c => c.id === t.categoryId);
-          lines.push(`TASK${i + 1}=` + clean(t.title));
-          lines.push(`TASK${i + 1}_R=+` + (t.coinReward || 0));
-          lines.push(`TASK${i + 1}_C=` + hexToRgb(cat ? cat.color : '#9a9aa8'));
+          v['TASK' + n] = clean(t.title);
+          v['TASK' + n + '_R'] = String(t.coinReward || 0);
+          v['TASK' + n + '_C'] = hexToRgb(cat ? cat.color : '#9a9aa8');
+          v['TASK' + n + '_CAT'] = clean(cat ? cat.name : '');
+          v['TASK' + n + '_TYPE'] = t.type === 'daily' ? 'CODZIENNIE' : (t.type === 'weekly' ? 'TYGODNIOWO' : '');
         } else {
-          lines.push(`TASK${i + 1}=`);
-          lines.push(`TASK${i + 1}_R=`);
-          lines.push(`TASK${i + 1}_C=22,22,32`);
+          v['TASK' + n] = ''; v['TASK' + n + '_R'] = ''; v['TASK' + n + '_C'] = '22,22,32'; v['TASK' + n + '_CAT'] = ''; v['TASK' + n + '_TYPE'] = '';
         }
       }
       const more = Math.max(0, active.length - WIDGET_SLOTS);
-      lines.push('MORE=' + (more > 0 ? ('+' + more + ' wiecej') : ''));
-      return lines.join('\n') + '\n';
+      v.MORE = more > 0 ? ('+' + more + ' więcej') : '';
+      return Object.keys(WF).map(k => k + '=' + clean(v[k])).join('\n') + '\n';
+    }
+
+    // ---- Rainmeter skin generators (two separate widgets) ----
+    function skinHead(title) {
+      return [
+        '; ' + title + ' — Personal Dashboard (widget na pulpit)',
+        '; USTAW StatsFile ponizej na plik dashboard-widget.txt z folderu wybranego w apce.',
+        '; Najprosciej: utworz C:\\DashboardWidget i wybierz go w apce -> dziala bez zmian.',
+        '',
+        '[Rainmeter]', 'Update=1000', 'AccurateText=1', 'DynamicWindowSize=1', '',
+        '[Variables]',
+        'StatsFile=C:\\DashboardWidget\\dashboard-widget.txt',
+        'FontName=Segoe UI', '',
+        '[MeasureStats]', 'Measure=WebParser', 'URL=file://#StatsFile#', 'CodePage=65001', 'UpdateRate=2', 'ForceReload=1',
+        'RegExp=' + widgetRegExp(), ''
+      ].join('\r\n');
+    }
+    function wpMeasure(name, idx, extra) {
+      return ['[' + name + ']', 'Measure=WebParser', 'URL=[MeasureStats]', 'StringIndex=' + idx].concat(extra || []).concat(['']).join('\r\n');
+    }
+
+    function buildGoalSkin() {
+      const P = [skinHead('CEL MIESIACA')];
+      P.push(wpMeasure('mEarned', WF.MONTH_EARNED, ['IfMatch=^$', 'IfMatchAction=[!ShowMeter hint][!HideMeterGroup data][!Redraw]', 'IfNotMatchAction=[!HideMeter hint][!ShowMeterGroup data][!Redraw]']));
+      P.push(wpMeasure('mSub', WF.MONTH_SUB));
+      P.push(wpMeasure('mGoal', WF.MONTH_GOAL));
+      P.push(wpMeasure('mGoalPct', WF.GOAL_PCT, ['Substitute="":"0"']));
+      P.push(wpMeasure('mGoalInfo', WF.GOAL_INFO));
+      P.push([
+        '[bg]', 'Meter=Shape',
+        'Shape=Rectangle 0,0,430,206,20 | Fill Color 9,20,16,242 | StrokeWidth 1 | Stroke Color 0,245,160,45',
+        'Shape2=Ellipse 380,-10,140,140 | Fill Color 0,245,160,26 | StrokeWidth 0', '',
+        '[lblMonth]', 'Meter=String', 'Group=data', 'X=26', 'Y=22', 'FontFace=#FontName#', 'FontSize=11', 'FontColor=150,150,165', 'StringStyle=Bold', 'AntiAlias=1', 'Text=TEN MIESIAC', '',
+        '[bigVal]', 'Meter=String', 'Group=data', 'X=24', 'Y=36', 'FontFace=#FontName#', 'FontSize=42', 'FontColor=0,245,160', 'StringStyle=Bold', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mEarned]', '',
+        '[sub]', 'Meter=String', 'Group=data', 'X=26', 'Y=98', 'FontFace=#FontName#', 'FontSize=12', 'FontColor=150,150,165', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mSub]', '',
+        '[lblGoal]', 'Meter=String', 'Group=data', 'X=26', 'Y=130', 'FontFace=#FontName#', 'FontSize=10', 'FontColor=150,150,165', 'StringStyle=Bold', 'AntiAlias=1', 'Text=CEL MIESIACA', '',
+        '[goalVal]', 'Meter=String', 'Group=data', 'X=404', 'Y=128', 'StringAlign=Right', 'FontFace=#FontName#', 'FontSize=13', 'FontColor=245,245,247', 'StringStyle=Bold', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mEarned] / [mGoal]', '',
+        '[barBg]', 'Meter=Shape', 'Group=data', 'Shape=Rectangle 26,154,378,10,5 | Fill Color 0,0,0,120 | StrokeWidth 0', '',
+        '[barFill]', 'Meter=Shape', 'Group=data', 'DynamicVariables=1', 'Shape=Rectangle 26,154,(Clamp([mGoalPct],0,100)*3.78+0.01),10,5 | Fill Color 0,245,160,255 | StrokeWidth 0', '',
+        '[pct]', 'Meter=String', 'Group=data', 'X=26', 'Y=172', 'FontFace=#FontName#', 'FontSize=11', 'FontColor=0,245,160', 'StringStyle=Bold', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mGoalPct]%', '',
+        '[info]', 'Meter=String', 'Group=data', 'X=404', 'Y=172', 'StringAlign=Right', 'FontFace=#FontName#', 'FontSize=11', 'FontColor=150,150,165', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mGoalInfo]', '',
+        '[hint]', 'Meter=String', 'X=26', 'Y=60', 'W=380', 'H=110', 'Hidden=1', 'ClipString=2', 'FontFace=#FontName#', 'FontSize=12', 'FontColor=150,150,165', 'AntiAlias=1', 'Text=Brak danych z apki.#CRLF##CRLF#W apce: Ustawienia -> Widget na pulpit -> wybierz folder, potem ustaw StatsFile w tym pliku i zrob Refresh.'
+      ].join('\r\n'));
+      return P.join('\r\n');
+    }
+
+    function buildTodoSkin() {
+      const rowH = 62, gap = 10, top = 54, W = 430;
+      const P = [skinHead('MOJE TO-DO')];
+      P.push(wpMeasure('mCount', WF.TASKCOUNT));
+      P.push(wpMeasure('mMore', WF.MORE, ['IfMatch=^$', 'IfMatchAction=[!HideMeter more][!Redraw]', 'IfNotMatchAction=[!ShowMeter more][!Redraw]']));
+      P.push(wpMeasure('mHintCheck', WF.UPDATED, ['IfMatch=^$', 'IfMatchAction=[!ShowMeter hint][!Redraw]', 'IfNotMatchAction=[!HideMeter hint][!Redraw]']));
+      P.push([
+        '[hdrPill]', 'Meter=Shape', 'Shape=Rectangle 20,14,160,32,16 | Fill Color 245,245,247,255 | StrokeWidth 0', '',
+        '[hdrText]', 'Meter=String', 'X=44', 'Y=22', 'FontFace=#FontName#', 'FontSize=12', 'FontColor=10,10,15', 'StringStyle=Bold', 'AntiAlias=1', 'DynamicVariables=1', 'Text=Wszystkie · [mCount]'
+      ].join('\r\n'));
+      for (let i = 1; i <= WIDGET_SLOTS; i++) {
+        const y = top + (i - 1) * (rowH + gap); const g = 'Row' + i;
+        P.push(wpMeasure('mT' + i, WF['TASK' + i], ['IfMatch=^$', 'IfMatchAction=[!HideMeterGroup ' + g + '][!Redraw]', 'IfNotMatchAction=[!ShowMeterGroup ' + g + '][!Redraw]']));
+        P.push(wpMeasure('mT' + i + 'R', WF['TASK' + i + '_R']));
+        P.push(wpMeasure('mT' + i + 'C', WF['TASK' + i + '_C'], ['Substitute="":"154,154,168"']));
+        P.push(wpMeasure('mT' + i + 'CAT', WF['TASK' + i + '_CAT']));
+        P.push(wpMeasure('mT' + i + 'TYPE', WF['TASK' + i + '_TYPE']));
+        P.push([
+          '[' + g + 'card]', 'Meter=Shape', 'Group=' + g, 'Shape=Rectangle 0,' + y + ',' + W + ',' + rowH + ',14 | Fill Color 20,20,28,235 | StrokeWidth 1 | Stroke Color 255,255,255,14', '',
+          '[' + g + 'chk]', 'Meter=Shape', 'Group=' + g, 'Shape=Ellipse 34,' + (y + rowH / 2) + ',11 | StrokeWidth 2 | Stroke Color 120,120,135,255 | Fill Color 0,0,0,1', '',
+          '[' + g + 'title]', 'Meter=String', 'Group=' + g, 'X=58', 'Y=' + (y + 11), 'W=250', 'H=22', 'ClipString=1', 'FontFace=#FontName#', 'FontSize=14', 'FontColor=245,245,247', 'StringStyle=Bold', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mT' + i + ']', '',
+          '[' + g + 'dot]', 'Meter=Shape', 'Group=' + g, 'DynamicVariables=1', 'Shape=Ellipse 62,' + (y + 41) + ',4 | Fill Color [mT' + i + 'C] | StrokeWidth 0', '',
+          '[' + g + 'cat]', 'Meter=String', 'Group=' + g, 'X=72', 'Y=' + (y + 33), 'FontFace=#FontName#', 'FontSize=11', 'FontColor=150,150,165', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mT' + i + 'CAT]', '',
+          '[' + g + 'type]', 'Meter=String', 'Group=' + g, 'X=196', 'Y=' + (y + 33), 'FontFace=#FontName#', 'FontSize=10', 'FontColor=157,91,255', 'StringStyle=Bold', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mT' + i + 'TYPE]', '',
+          '[' + g + 'pill]', 'Meter=Shape', 'Group=' + g, 'Shape=Rectangle 342,' + (y + 15) + ',68,32,9 | Fill Color 255,184,0,26 | StrokeWidth 1 | Stroke Color 255,184,0,120', '',
+          '[' + g + 'coin]', 'Meter=Shape', 'Group=' + g, 'Shape=Ellipse 362,' + (y + 31) + ',6 | Fill Color 255,184,0,255 | StrokeWidth 0', '',
+          '[' + g + 'rew]', 'Meter=String', 'Group=' + g, 'X=400', 'Y=' + (y + 15), 'StringAlign=Right', 'FontFace=#FontName#', 'FontSize=14', 'FontColor=255,184,0', 'StringStyle=Bold', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mT' + i + 'R]'
+        ].join('\r\n'));
+      }
+      const yMore = top + WIDGET_SLOTS * (rowH + gap);
+      P.push(['[more]', 'Meter=String', 'X=58', 'Y=' + yMore, 'FontFace=#FontName#', 'FontSize=11', 'FontColor=150,150,165', 'StringStyle=Italic', 'AntiAlias=1', 'DynamicVariables=1', 'Text=[mMore]'].join('\r\n'));
+      P.push(['[hint]', 'Meter=String', 'X=20', 'Y=58', 'W=390', 'H=200', 'Hidden=1', 'ClipString=2', 'FontFace=#FontName#', 'FontSize=12', 'FontColor=150,150,165', 'AntiAlias=1', 'Text=Brak danych z apki.#CRLF##CRLF#1) W apce: Ustawienia -> Widget na pulpit -> wybierz folder.#CRLF#2) Ustaw StatsFile w tym pliku.#CRLF#3) Prawy klik -> Refresh.'].join('\r\n'));
+      return P.join('\r\n');
+    }
+
+    function downloadSkin(kind) {
+      const txt = kind === 'goal' ? buildGoalSkin() : buildTodoSkin();
+      const name = kind === 'goal' ? 'Dashboard-Cel.ini' : 'Dashboard-Todo.ini';
+      const blob = new Blob([txt], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      toast('⬇️', 'Pobrano skin', name);
     }
 
     async function writeWidgetFile() {
@@ -3358,46 +2887,40 @@ const firebaseConfig = {
       toast('🖥️', 'Widget wyłączony', 'Apka nie zapisuje już pliku');
     }
 
-    function downloadWidgetSkin() {
-      const blob = new Blob([WIDGET_SKIN_INI], { type: 'text/plain' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'Dashboard.ini';
-      a.click();
-      toast('⬇️', 'Pobrano skin', 'Dashboard.ini');
-    }
-
     function openWidgetHelp(folderName) {
       const html = `
         <div class="modal-title">Widget na pulpit 🖥️</div>
         <div style="font-size:13px; color:var(--text-dim); line-height:1.7;">
-          <p style="margin-bottom:10px;">✅ Apka sama zapisuje plik z danymi <b class="mono">${WIDGET_FILE}</b>${folderName ? ' w folderze <b>' + escapeHtml(folderName) + '</b>' : ''} (odświeża go automatycznie). <b>Tego pliku nie pobierasz</b> — jest już w tym folderze.</p>
-          <p style="margin-bottom:10px; color:var(--text-mute); font-size:12px;">Przycisk niżej pobiera co innego: <b class="mono">Dashboard.ini</b> — to wygląd widgetu dla Rainmetera (pobierasz raz).</p>
+          <p style="margin-bottom:10px;">✅ Apka sama zapisuje plik z danymi <b class="mono">${WIDGET_FILE}</b>${folderName ? ' w folderze <b>' + escapeHtml(folderName) + '</b>' : ''} i odświeża go automatycznie. <b>Tego pliku nie pobierasz</b> — jest już w tym folderze.</p>
+          <p style="margin-bottom:10px; color:var(--text-mute); font-size:12px;">Poniżej pobierasz <b>dwa osobne widżety</b> (skiny Rainmetera): <b class="mono">To-Do</b> i <b class="mono">Cel</b>. Możesz ustawić je w różnych miejscach pulpitu.</p>
           <div style="height:1px; background:var(--border); margin:12px 0;"></div>
-          <b style="color:var(--text);">Aby zobaczyć widget na pulpicie:</b>
+          <b style="color:var(--text);">Aby zobaczyć widżety na pulpicie:</b>
           <ol style="margin:8px 0 0 18px; display:flex; flex-direction:column; gap:7px;">
-            <li>Najprościej: wybierz w kroku wyżej folder <b class="mono">C:\\DashboardWidget</b> (utwórz go, jeśli nie ma) — wtedy skin działa bez zmian.</li>
+            <li>Najprościej: wybierz wyżej folder <b class="mono">C:\\DashboardWidget</b> — skiny działają bez zmian.</li>
             <li>Zainstaluj darmowy <b>Rainmeter</b> (rainmeter.net).</li>
-            <li>Pobierz mój skin przyciskiem poniżej i uruchom (podwójny klik na <b class="mono">Dashboard.ini</b>).</li>
-            <li>Jeśli wybrałeś inny folder — w skinie ustaw <b class="mono">StatsFile</b> na pełną ścieżkę do <b class="mono">${WIDGET_FILE}</b>, potem prawy klik → <b>Refresh</b>.</li>
+            <li>Pobierz oba skiny poniżej i uruchom każdy (podwójny klik na <b class="mono">.ini</b>).</li>
+            <li>Jeśli wybrałeś inny folder — w każdym skinie ustaw <b class="mono">StatsFile</b> na ścieżkę do <b class="mono">${WIDGET_FILE}</b>, potem prawy klik → <b>Refresh</b>.</li>
           </ol>
           <div style="height:1px; background:var(--border); margin:12px 0;"></div>
-          <b style="color:var(--text);">Chcesz, żeby zawsze był aktualny? Autostart w Edge:</b>
+          <b style="color:var(--text);">Autostart w Edge (żeby był zawsze aktualny):</b>
           <ol style="margin:8px 0 0 18px; display:flex; flex-direction:column; gap:7px;">
-            <li>W Edge zainstaluj tę stronę jako apkę (ikona instalacji w pasku adresu lub ⋯ → Aplikacje → Zainstaluj).</li>
-            <li>Wejdź na <b class="mono">edge://apps</b>, kliknij apkę prawym → włącz <b>„Uruchamiaj przy logowaniu do urządzenia"</b>.</li>
-            <li>Apka będzie startować z Windowsem i w tle odświeżać plik widgetu. Okno możesz zminimalizować.</li>
+            <li>W Edge zainstaluj tę stronę jako apkę (ikona instalacji w pasku adresu).</li>
+            <li>Wejdź na <b class="mono">edge://apps</b> → prawy klik na apce → <b>„Uruchamiaj przy logowaniu"</b>.</li>
           </ol>
-          <p style="margin-top:12px; font-size:11px; color:var(--text-mute);">Działa na Windows z Chrome/Edge, gdy apka (okno/PWA) jest otwarta. Po restarcie może raz poprosić o zgodę na zapis do folderu — kliknij „Zezwól".</p>
+          <p style="margin-top:12px; font-size:11px; color:var(--text-mute);">Działa na Windows z Chrome/Edge, gdy apka (okno/PWA) jest otwarta.</p>
         </div>
         <div class="modal-grid-2" style="margin-top:16px;">
-          <button class="btn btn-ghost" id="whDisable">Wyłącz widget</button>
-          <button class="btn btn-primary" id="whSkin">⬇️ Pobierz skin</button>
+          <button class="btn btn-primary" id="whTodo">⬇️ Skin: To-Do</button>
+          <button class="btn btn-primary" id="whGoal">⬇️ Skin: Cel</button>
         </div>
-        <button class="btn btn-ghost" id="whClose" style="width:100%; margin-top:10px;">Zamknij</button>
+        <div class="modal-grid-2" style="margin-top:10px;">
+          <button class="btn btn-ghost" id="whDisable">Wyłącz widget</button>
+          <button class="btn btn-ghost" id="whClose">Zamknij</button>
+        </div>
       `;
       openModal(html);
-      $('#whSkin').onclick = downloadWidgetSkin;
+      $('#whTodo').onclick = () => downloadSkin('todo');
+      $('#whGoal').onclick = () => downloadSkin('goal');
       $('#whDisable').onclick = disableWidgetExport;
       $('#whClose').onclick = closeModal;
     }
