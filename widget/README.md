@@ -23,8 +23,13 @@ Pliki skinów: **`Dashboard-Todo.ini`** (lista zadań) i **`Dashboard-Cel.ini`**
 
 ### 3. Dodaj skiny (dwa osobne widżety)
 - Pobierz **`Dashboard-Todo.ini`** i **`Dashboard-Cel.ini`** (przyciskami w apce albo z tego folderu).
-- Wrzuć oba do `Dokumenty\Rainmeter\Skins\Dashboard\` (mogą być w jednym folderze).
-- W Rainmeterze załaduj każdy z osobna — pojawią się jako dwa niezależne widżety, które przeciągniesz gdzie chcesz.
+- ⚠️ **Każdy skin musi być w OSOBNYM folderze** w `Dokumenty\Rainmeter\Skins\` — w Rainmeterze pliki `.ini` w tym samym folderze to warianty jednej konfiguracji i tylko jeden może być aktywny (dlatego włączenie jednego wyłącza drugi). Zrób np.:
+  ```
+  Dokumenty\Rainmeter\Skins\
+    Kasa-Todo\Dashboard-Todo.ini
+    Kasa-Cel\Dashboard-Cel.ini
+  ```
+- W Rainmeterze **Refresh all**, potem załaduj obie konfiguracje — pojawią się jako dwa niezależne widżety, które przeciągniesz gdzie chcesz.
 - Jeśli w kroku 1 wybrałeś `C:\DashboardWidget` — **nic nie musisz zmieniać**, oba skiny już tam patrzą.
 - Jeśli wybrałeś inny folder — w każdym `.ini` w `[Variables]` ustaw:
   ```
