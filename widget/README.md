@@ -35,6 +35,14 @@ Gotowe — widget pojawi się na pulpicie. Możesz go przeciągnąć w dowolne m
 ## Dostosowanie
 W sekcji `[Variables]` skinu możesz zmienić kolory (`cGold`, `cMint`, …) i czcionkę (`FontName`). Widget pokazuje do 8 zadań; resztę sygnalizuje linijka „+N więcej".
 
+## Autostart — żeby widget był zawsze aktualny (Edge)
+Widget odświeża się tylko gdy apka działa. Żeby startowała sama z Windowsem:
+1. W **Edge** otwórz stronę → zainstaluj jako apkę (ikona instalacji w pasku adresu, albo ⋯ → *Aplikacje → Zainstaluj tę witrynę jako aplikację*).
+2. Wejdź na **`edge://apps`** → prawy klik na apce → włącz **„Uruchamiaj przy logowaniu do urządzenia"** (Start app when you sign in).
+3. Od teraz apka startuje z systemem i w tle nadpisuje plik widgetu — okno możesz zminimalizować.
+
+> Po restarcie systemu przeglądarka może raz poprosić o zgodę na zapis do folderu — kliknij **Zezwól**. W nowszym Edge zgoda potrafi być zapamiętana na stałe.
+
 ## Ograniczenia (uczciwie)
 - Aktualizacja tylko gdy apka jest otwarta (to przeglądarka zapisuje plik).
 - Zapis pliku działa w Chrome/Edge na komputerze (nie Firefox/Safari, nie na telefonie).
