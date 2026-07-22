@@ -17,6 +17,7 @@ Twoja prywatna gra produktywności. PWA z synchronizacją w chmurze, dostępna t
 - **Dźwięki** — slot ding, jackpot fanfare, achievement chime (wszystko generowane w Web Audio API, brak plików)
 - **Wibracje** na telefonie
 - **Sync** między telefonem a komputerem (Firebase)
+- **Widget na pulpit (Windows)** — lista to-do i cel miesięczny na pulpicie przez Rainmeter (apka eksportuje dane, skin w `widget/`)
 - **PWA** — dodajesz na pulpit jak normalną apkę
 
 ---
