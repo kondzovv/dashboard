@@ -13,7 +13,7 @@ Widget pokazuje na pulpicie **listę to-do** i **cel miesięczny** z Twojego das
 
 ### 1. Włącz eksport w apce
 - Otwórz dashboard na komputerze (Chrome/Edge) → **⚙️ Ustawienia → Widget na pulpit (Windows)**.
-- Wybierz folder, w którym ma powstać plik (np. `Dokumenty\DashboardWidget`). Zapamiętaj tę ścieżkę.
+- **Najprościej:** utwórz folder `C:\DashboardWidget` i wybierz właśnie jego — wtedy skin działa bez żadnych zmian (jego domyślny `StatsFile` już wskazuje ten folder).
 - Apka od teraz zapisuje tam `dashboard-widget.txt` i odświeża go przy każdej zmianie.
 
 ### 2. Zainstaluj Rainmeter
@@ -22,11 +22,12 @@ Widget pokazuje na pulpicie **listę to-do** i **cel miesięczny** z Twojego das
 ### 3. Dodaj skin
 - Pobierz **`Dashboard.ini`** (przyciskiem w apce albo z tego folderu w repo).
 - Wrzuć go do: `Dokumenty\Rainmeter\Skins\Dashboard\Dashboard.ini`
-- Otwórz **`Dashboard.ini`** w Notatniku i w sekcji `[Variables]` ustaw ścieżkę:
+- Jeśli w kroku 1 wybrałeś `C:\DashboardWidget` — **nic nie musisz zmieniać**, skin już tam patrzy.
+- Jeśli wybrałeś inny folder — otwórz **`Dashboard.ini`** w Notatniku i w `[Variables]` ustaw:
   ```
-  StatsFile=C:\Users\TWOJA_NAZWA\Documents\DashboardWidget\dashboard-widget.txt
+  StatsFile=C:\pełna\ścieżka\do\dashboard-widget.txt
   ```
-  (wpisz pełną ścieżkę do pliku z kroku 1).
+- Gdy widget pokazuje instrukcję zamiast danych — znaczy, że nie widzi pliku: sprawdź `StatsFile` i czy eksport w apce jest włączony, potem prawy klik na widget → **Refresh**.
 - W Rainmeterze: **Refresh all**, potem załaduj skin `Dashboard → Dashboard.ini`.
 
 Gotowe — widget pojawi się na pulpicie. Możesz go przeciągnąć w dowolne miejsce.
